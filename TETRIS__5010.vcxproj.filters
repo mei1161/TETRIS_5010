@@ -27,90 +27,90 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="source\adx.cpp">
+      <Filter>ソース ファイル\base</Filter>
+    </ClCompile>
+    <ClCompile Include="source\common.cpp">
+      <Filter>ソース ファイル\base</Filter>
+    </ClCompile>
+    <ClCompile Include="source\direct3d.cpp">
+      <Filter>ソース ファイル\base</Filter>
+    </ClCompile>
+    <ClCompile Include="source\keyboard.cpp">
+      <Filter>ソース ファイル\base</Filter>
+    </ClCompile>
+    <ClCompile Include="source\pad.cpp">
+      <Filter>ソース ファイル\base</Filter>
+    </ClCompile>
+    <ClCompile Include="source\sprite.cpp">
+      <Filter>ソース ファイル\base</Filter>
+    </ClCompile>
+    <ClCompile Include="source\texture.cpp">
+      <Filter>ソース ファイル\base</Filter>
+    </ClCompile>
+    <ClCompile Include="source\field.cpp">
+      <Filter>ソース ファイル\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\game.cpp">
+      <Filter>ソース ファイル\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\player.cpp">
+      <Filter>ソース ファイル\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\result.cpp">
+      <Filter>ソース ファイル\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\title.cpp">
+      <Filter>ソース ファイル\game</Filter>
+    </ClCompile>
+    <ClCompile Include="source\main.cpp">
       <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="adx.cpp">
-      <Filter>ソース ファイル\base</Filter>
-    </ClCompile>
-    <ClCompile Include="common.cpp">
-      <Filter>ソース ファイル\base</Filter>
-    </ClCompile>
-    <ClCompile Include="direct3d.cpp">
-      <Filter>ソース ファイル\base</Filter>
-    </ClCompile>
-    <ClCompile Include="keyboard.cpp">
-      <Filter>ソース ファイル\base</Filter>
-    </ClCompile>
-    <ClCompile Include="pad.cpp">
-      <Filter>ソース ファイル\base</Filter>
-    </ClCompile>
-    <ClCompile Include="sprite.cpp">
-      <Filter>ソース ファイル\base</Filter>
-    </ClCompile>
-    <ClCompile Include="texture.cpp">
-      <Filter>ソース ファイル\base</Filter>
-    </ClCompile>
-    <ClCompile Include="field.cpp">
-      <Filter>ソース ファイル\game</Filter>
-    </ClCompile>
-    <ClCompile Include="game.cpp">
-      <Filter>ソース ファイル\game</Filter>
-    </ClCompile>
-    <ClCompile Include="player.cpp">
-      <Filter>ソース ファイル\game</Filter>
-    </ClCompile>
-    <ClCompile Include="result.cpp">
-      <Filter>ソース ファイル\game</Filter>
-    </ClCompile>
-    <ClCompile Include="title.cpp">
-      <Filter>ソース ファイル\game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="adx.h">
+    <ClInclude Include="source\adx.h">
       <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
-    <ClInclude Include="common.h">
+    <ClInclude Include="source\common.h">
       <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
-    <ClInclude Include="direct3d.h">
+    <ClInclude Include="source\direct3d.h">
       <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
-    <ClInclude Include="keyboard.h">
+    <ClInclude Include="source\error.h">
       <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
-    <ClInclude Include="pad.h">
+    <ClInclude Include="source\keyboard.h">
       <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
-    <ClInclude Include="release.h">
+    <ClInclude Include="source\pad.h">
       <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
-    <ClInclude Include="sprite.h">
+    <ClInclude Include="source\release.h">
       <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
-    <ClInclude Include="texture.h">
+    <ClInclude Include="source\sprite.h">
       <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
-    <ClInclude Include="field.h">
+    <ClInclude Include="source\texture.h">
+      <Filter>ヘッダー ファイル\base</Filter>
+    </ClInclude>
+    <ClInclude Include="source\field.h">
       <Filter>ヘッダー ファイル\game</Filter>
     </ClInclude>
-    <ClInclude Include="game.h">
+    <ClInclude Include="source\game.h">
       <Filter>ヘッダー ファイル\game</Filter>
     </ClInclude>
-    <ClInclude Include="error.h">
-      <Filter>ヘッダー ファイル\base</Filter>
-    </ClInclude>
-    <ClInclude Include="result.h">
+    <ClInclude Include="source\player.h">
       <Filter>ヘッダー ファイル\game</Filter>
     </ClInclude>
-    <ClInclude Include="title.h">
+    <ClInclude Include="source\result.h">
       <Filter>ヘッダー ファイル\game</Filter>
     </ClInclude>
-    <ClInclude Include="player.h">
+    <ClInclude Include="source\title.h">
       <Filter>ヘッダー ファイル\game</Filter>
     </ClInclude>
   </ItemGroup>

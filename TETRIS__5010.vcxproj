@@ -142,38 +142,38 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="adx.cpp" />
-    <ClCompile Include="common.cpp" />
-    <ClCompile Include="direct3d.cpp" />
-    <ClCompile Include="field.cpp" />
-    <ClCompile Include="game.cpp" />
-    <ClCompile Include="keyboard.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="pad.cpp" />
-    <ClCompile Include="player.cpp" />
-    <ClCompile Include="result.cpp" />
-    <ClCompile Include="sprite.cpp" />
-    <ClCompile Include="texture.cpp" />
-    <ClCompile Include="title.cpp" />
+    <ClCompile Include="source\adx.cpp" />
+    <ClCompile Include="source\common.cpp" />
+    <ClCompile Include="source\direct3d.cpp" />
+    <ClCompile Include="source\field.cpp" />
+    <ClCompile Include="source\game.cpp" />
+    <ClCompile Include="source\keyboard.cpp" />
+    <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\pad.cpp" />
+    <ClCompile Include="source\player.cpp" />
+    <ClCompile Include="source\result.cpp" />
+    <ClCompile Include="source\sprite.cpp" />
+    <ClCompile Include="source\texture.cpp" />
+    <ClCompile Include="source\title.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="adx.h" />
-    <ClInclude Include="common.h" />
-    <ClInclude Include="direct3d.h" />
-    <ClInclude Include="error.h" />
-    <ClInclude Include="field.h" />
-    <ClInclude Include="game.h" />
-    <ClInclude Include="keyboard.h" />
-    <ClInclude Include="pad.h" />
-    <ClInclude Include="player.h" />
-    <ClInclude Include="release.h" />
-    <ClInclude Include="result.h" />
-    <ClInclude Include="sprite.h" />
-    <ClInclude Include="texture.h" />
-    <ClInclude Include="title.h" />
+    <ClInclude Include="source\adx.h" />
+    <ClInclude Include="source\common.h" />
+    <ClInclude Include="source\direct3d.h" />
+    <ClInclude Include="source\error.h" />
+    <ClInclude Include="source\field.h" />
+    <ClInclude Include="source\game.h" />
+    <ClInclude Include="source\keyboard.h" />
+    <ClInclude Include="source\pad.h" />
+    <ClInclude Include="source\player.h" />
+    <ClInclude Include="source\release.h" />
+    <ClInclude Include="source\result.h" />
+    <ClInclude Include="source\sprite.h" />
+    <ClInclude Include="source\texture.h" />
+    <ClInclude Include="source\title.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
