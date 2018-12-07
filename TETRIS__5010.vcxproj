@@ -146,6 +146,7 @@
     <ClCompile Include="source\common.cpp" />
     <ClCompile Include="source\direct3d.cpp" />
     <ClCompile Include="source\field.cpp" />
+    <ClCompile Include="source\font.cpp" />
     <ClCompile Include="source\game.cpp" />
     <ClCompile Include="source\keyboard.cpp" />
     <ClCompile Include="source\main.cpp" />
@@ -165,6 +166,7 @@
     <ClInclude Include="source\direct3d.h" />
     <ClInclude Include="source\error.h" />
     <ClInclude Include="source\field.h" />
+    <ClInclude Include="source\font.h" />
     <ClInclude Include="source\game.h" />
     <ClInclude Include="source\keyboard.h" />
     <ClInclude Include="source\pad.h" />

@@ -18,6 +18,8 @@
 #include "result.h"
 #include "adx.h"
 
+#include"field.h"
+
 
 
 ////////////////////////////////////
@@ -135,12 +137,16 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
         return 0;
     }
 
-    /* // fieldクラス変数
+     // fieldクラス変数
      Field field;
 
      // プレイヤークラス
-     Player player;*/
-
+    // Player player;
+     if( !field.init() )
+     {
+         //エラー
+         return 0;
+     }
 
 
      // Keyboardクラスの初期化
@@ -324,7 +330,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     break;
                 }*/
                 /////////////////////////////////////　
-
+                field.draw();//フィールド描画
 
                 Sprite::end();      // スプライト描画終了
                 Direct3D::present();// 画面更新
@@ -339,6 +345,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
   //  tutorial.destroy();
   //  title.destroy();
   //  game.destroy();
+    field.destroy();
     Key::destroy();
     //   Font::destroy();
     Common::destroy();
