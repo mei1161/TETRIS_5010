@@ -24,6 +24,19 @@ bool Field::init()
         Error::showDialog( "Tetris11_SingleT.pngが開けませんでした" );
         return false;
     }
+    int i;//ループカウンタ
+    int j;
+    for( i = 0; i < 22; i++ )
+    {
+        for( j = 0; j < 12; j++ )
+        {
+            if( i == 0 || i == 21 || j == 11 )
+            {
+                field[ i ][ j ] = 9;
+            }
+        }
+    }
+
 
 
     return true;
@@ -50,4 +63,5 @@ void Field::draw()
 void Field::destroy()
 {
     SAFE_RELEASE( texture_ );//テクスチャの破棄
+   
 }

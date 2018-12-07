@@ -17,8 +17,9 @@
 #include "title.h"
 #include "result.h"
 #include "adx.h"
-
+#include"block.h"
 #include"field.h"
+#include"player.h"
 
 
 
@@ -140,8 +141,13 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
      // fieldクラス変数
      Field field;
 
-     // プレイヤークラス
-    // Player player;
+     // ブロッククラス
+     Block block;
+     if( !block.init() )
+     {
+         //エラー
+         return 0;
+     }
      if( !field.init() )
      {
          //エラー
@@ -223,6 +229,8 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                 Key::update();      // キーボード更新
            //     Adx::update();      // サウンド更新
 
+
+                block.update();
                 /////// !! 後で修正 !! /////////////
                 // シーン処理
             /*    switch( work_no )
@@ -331,7 +339,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                 }*/
                 /////////////////////////////////////　
                 field.draw();//フィールド描画
-
+                block.draw();
                 Sprite::end();      // スプライト描画終了
                 Direct3D::present();// 画面更新
             }
@@ -346,12 +354,13 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
   //  title.destroy();
   //  game.destroy();
     field.destroy();
+    block.destroy();
     Key::destroy();
     //   Font::destroy();
     Common::destroy();
     Sprite::destroy();
     Direct3D::destroy();
-    Adx::destroy();
+  //  Adx::destroy();
 
     return 0;
 }

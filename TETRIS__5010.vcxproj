@@ -143,6 +143,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="source\adx.cpp" />
+    <ClCompile Include="source\block.cpp" />
     <ClCompile Include="source\common.cpp" />
     <ClCompile Include="source\direct3d.cpp" />
     <ClCompile Include="source\field.cpp" />
@@ -162,6 +163,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\adx.h" />
+    <ClInclude Include="source\block.h" />
     <ClInclude Include="source\common.h" />
     <ClInclude Include="source\direct3d.h" />
     <ClInclude Include="source\error.h" />

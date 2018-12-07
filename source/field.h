@@ -16,6 +16,7 @@ private:
     ID3D11ShaderResourceView* texture_;//テクスチャ
     int width_;//横幅
     int height_;//縦幅
+    int field[ 22 ][ 12 ];//フィールド配列
 public:
     Field();//コンストラクタ
     bool init();    //初期化
