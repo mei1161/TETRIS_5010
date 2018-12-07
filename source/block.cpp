@@ -41,11 +41,30 @@ bool Block::init()
 //XV
 void Block::update()
 {
-    int count = 0;
-    Keyboard::State key = Key::getKeyState();
   
-
-   
+    Keyboard::State key = Key::getKeyState();
+    if( position_.y <= 670 ) {
+        if( key.Left )
+        {
+            position_.x -= plus;
+        }
+        else if( key.Right )
+        {
+            position_.x += plus;
+        }
+        else if( key.Up )
+        {
+            position_.y -= plus;
+        }
+        else if( key.Down )
+        {
+            position_.y += plus;
+        }
+        else
+        {
+            position_.y += plus;
+        }
+    }
     }
  
 
