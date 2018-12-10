@@ -16,12 +16,15 @@ private:
     float plus;         //移動量
     bool move_;//動けるかどうかを見るフラグ
     int key_state;//何のキーを押したかを格納
+    int Animation_counter;//アニメーションカウンタ
+    int kAnimationSpeed;
 public:
     Block();   //コンストラクタ
     bool init();    //初期化
     void update();  //更新
     void draw();    //描画    
     void destroy(); //破棄
+    void Animation();//アニメーション処理
 
 
 

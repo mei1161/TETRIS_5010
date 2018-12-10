@@ -7,6 +7,7 @@ enum
     Up,
     Down
 };
+//定数
 
 
 
@@ -15,10 +16,11 @@ enum
 Block::Block()
 {
     texture_ = NULL;
-    position_.y = 173L;
+    position_.y = 173L;//ブロック座標
     position_.x = 635L;
     plus =2.5F;
-
+    Animation_counter = 0;
+    move_ = false;
 }
 
 //初期化
@@ -41,31 +43,55 @@ bool Block::init()
 //更新
 void Block::update()
 {
-  
     Keyboard::State key = Key::getKeyState();
+    
     if( position_.y <= 670 ) {
         if( key.Left )
         {
-            position_.x -= plus;
+            move_ = true;
+            key_state = Left;
+
         }
-        else if( key.Right )
+        else if( key.Right)
         {
-            position_.x += plus;
+            move_ = true;
+            key_state = Right;
         }
         else if( key.Up )
         {
-            position_.y -= plus;
+            move_ = true;
+            key_state = Up;
         }
         else if( key.Down )
         {
-            position_.y += plus;
+            move_ = true;
+            key_state = Down;
+
         }
         else
         {
-            position_.y += plus;
+            move_ = true;
+            key_state = Down;
         }
+
+ 
+        
+ 
+                switch( key_state ) {
+                case Left: position_.x -= plus; break;
+                case Right: position_.x +=plus; break;
+                case Down: position_.y += plus; break;
+                case Up:position_.y -= plus; break;
+                }
+            
     }
+           
     }
+
+
+
+
+ 
  
 
 
@@ -87,4 +113,10 @@ void Block::draw()
 void Block::destroy()
 {
     SAFE_RELEASE( texture_ );
+}
+
+//アニメーション処理
+void Block::Animation()
+{
+
 }
