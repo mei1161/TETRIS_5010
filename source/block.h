@@ -18,6 +18,7 @@ private:
     int key_state;//何のキーを押したかを格納
     int Animation_counter;//アニメーションカウンタ
     int kAnimationSpeed;
+    int count;
 public:
     Block();   //コンストラクタ
     bool init();    //初期化
