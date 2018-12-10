@@ -17,8 +17,8 @@ enum
 Block::Block()
 {
     texture_ = NULL;
-    position_.y = 173L;//ブロック座標
-    position_.x = 635L;
+    position_.y =173L;//ブロック座標
+    position_.x = 636L;
     plus =25.0F;
     Animation_counter = 0;
     move_ = false;
@@ -46,9 +46,13 @@ bool Block::init()
 void Block::update()
 {
     Keyboard::State key = Key::getKeyState();
+    if( position_.x <= 769 && position_.x >= 735 )
+    {
+        position_.x = 735;
+        key_state = None;
+    }
     
-    
-    if( position_.y <= 670&&position_.x<=721&&position_.x>=512) {
+    if( position_.y <= 670&&position_.x<=736&&position_.x>=520) {
         if( key.Left )
         {
             key_state = Left;
@@ -105,7 +109,7 @@ void Block::destroy()
 void Block::Animation()
 {
     //アニメーション処理
-    if( ++count >= 25 ) {
+    if( ++count >= 24 ) {
         switch( key_state ) {
         case Left: position_.x -= plus; break;
         case Right: position_.x += plus; break;

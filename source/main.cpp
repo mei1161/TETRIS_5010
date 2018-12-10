@@ -339,7 +339,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                 }*/
                 /////////////////////////////////////　
                 field.draw();//フィールド描画
-                block.draw();
+                block.draw();//ブロック描画
                 Sprite::end();      // スプライト描画終了
                 Direct3D::present();// 画面更新
             }
