@@ -72,6 +72,9 @@
     <ClCompile Include="source\block.cpp">
       <Filter>ソース ファイル\game</Filter>
     </ClCompile>
+    <ClCompile Include="source\button.cpp">
+      <Filter>ソース ファイル\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -124,6 +127,9 @@
     </ClInclude>
     <ClInclude Include="source\block.h">
       <Filter>ヘッダー ファイル\game</Filter>
+    </ClInclude>
+    <ClInclude Include="source\button.h">
+      <Filter>ソース ファイル\game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

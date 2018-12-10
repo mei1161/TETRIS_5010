@@ -109,7 +109,7 @@ void Block::destroy()
 void Block::Animation()
 {
     //アニメーション処理
-    if( ++count >= 24 ) {
+    if( ++count >= 25 ) {
         switch( key_state ) {
         case Left: position_.x -= plus; break;
         case Right: position_.x += plus; break;
