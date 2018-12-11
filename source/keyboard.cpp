@@ -8,6 +8,8 @@
 ////////////////////////////////////
 Keyboard* Key::key_;
 Keyboard::State Key::state_;
+Keyboard::KeyboardStateTracker key_tracker;
+
 
 ////////////////////////////////////
 // ‰Šú‰»
