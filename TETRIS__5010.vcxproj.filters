@@ -129,7 +129,7 @@
       <Filter>ヘッダー ファイル\game</Filter>
     </ClInclude>
     <ClInclude Include="source\button.h">
-      <Filter>ソース ファイル\game</Filter>
+      <Filter>ヘッダー ファイル\game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

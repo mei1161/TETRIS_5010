@@ -6,7 +6,8 @@ enum
     Right,
     Up,
     Down,
-    None
+    None,
+    B
 };
 //定数
 
@@ -18,11 +19,12 @@ Block::Block()
 {
     texture_ = NULL;
     position_.y =173L;//ブロック座標
-    position_.x = 636L;
+    position_.x =511L;
     plus =25.0F;
     Animation_counter = 0;
     move_ = false;
     count = 0;
+    flag = false;
 }
 
 //初期化
@@ -34,11 +36,22 @@ bool Block::init()
         // エラー
         return false;
     }
+    int i;//ループカウンタ
+    int j;
+    for( i = 0; i < 22; i++ )
+    {
+        for( j = 0; j < 12; j++ )
+        {
+            block[ i ][ j ] = 0;
+
+            if( i == 0 || i == 21 || j ==11 )//衝突判定のある場所に99を代入
+            {
+                block[ i ][ j ] = 99;
+            }
+        }
+        block[ 1 ][ 0 ] = 1;
+    }
     return true;
-
-
-
-
 }
 
 
@@ -46,43 +59,42 @@ bool Block::init()
 void Block::update()
 {
     Keyboard::State key = Key::getKeyState();
-    if( position_.x <= 769 && position_.x >= 735 )
-    {
-        position_.x = 735;
-        key_state = None;
-    }
+    int i, j;
+  
+
     
-    if( position_.y <= 670&&position_.x<=736&&position_.x>=520) {
+   if( position_.y <= 670 ) {
+
+
         if( key.Left )
         {
             key_state = Left;
+            Animation();
         }
         else if( key.Right )
         {
             key_state = Right;
+            Animation();
         }
         else if( key.Up )
         {
             key_state = Up;
+            Animation();
         }
         else if( key.Down )
         {
             key_state = Down;
+            Animation();
         }
         else
             key_state = None;
-
         Animation();
-       
     }
+    
+   
+
            
     }
-
-
-
-
- 
- 
 
 
 //描画
@@ -94,7 +106,10 @@ void Block::draw()
     rect.right = rect.left + 25L;
     rect.bottom = rect.top + 25L;
    
+
         Sprite::draw( texture_, position_, &rect );
+  
+   
     
     
 }
@@ -108,16 +123,17 @@ void Block::destroy()
 //アニメーション処理
 void Block::Animation()
 {
+
     //アニメーション処理
-    if( ++count >= 25 ) {
+    if( ++count >= 10) {
         switch( key_state ) {
         case Left: position_.x -= plus; break;
         case Right: position_.x += plus; break;
         case Down: position_.y += plus; break;
         case Up:position_.y -= plus; break;
         case None:position_.y += plus; break;
+        case B:position_.y += plus; break;
         }
         count = 0;
-
     }
 }

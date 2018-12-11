@@ -19,6 +19,9 @@ private:
     int Animation_counter;//アニメーションカウンタ
     int kAnimationSpeed;
     int count;
+    int block[ 22 ][ 12 ];
+    bool flag;
+
 public:
     Block();   //コンストラクタ
     bool init();    //初期化
@@ -26,7 +29,7 @@ public:
     void draw();    //描画    
     void destroy(); //破棄
     void Animation();//アニメーション処理
-
+    void judge();//ブロック判定
 
 
 };
