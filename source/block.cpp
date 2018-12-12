@@ -7,7 +7,6 @@ enum
     Up,
     Down,
     None,
-    B
 };
 //定数
 
@@ -63,36 +62,46 @@ void Block::update()
   
 
     
-   if( position_.y <= 670 ) {
+   if( position_.y <=670) {
 
-
-        if( key.Left )
-        {
-            key_state = Left;
-            Animation();
-        }
-        else if( key.Right )
-        {
-            key_state = Right;
-            Animation();
-        }
-        else if( key.Up )
-        {
-            key_state = Up;
-            Animation();
-        }
-        else if( key.Down )
-        {
-            key_state = Down;
-            Animation();
-        }
-        else
+       if( key.Left )//左移動
+       {
+           key_state = Left;
+           Animation();
+       }
+       else if( key.Right )//右移動
+       {
+           key_state = Right;
+           Animation();
+       }
+       else if( key.Up )//自動で下に落ちる
+       {
+           key_state = Up;
+           Animation();
+       }
+       else if( key.Down )//下移動
+       {
+           key_state = Down;
+           Animation();
+       }
+       else
             key_state = None;
-        Animation();
+            Animation();
     }
-    
    
-
+   //当たり判定
+   if( position_.x <= 486 )//右脇
+   {
+       position_.x += plus;
+   }
+   if( position_.x >= 756 )//左脇
+   {
+       position_.x -= plus;
+   }
+   if( position_.y >= 670 )//下
+   {
+       position_.y = 672;
+   }
            
     }
 
@@ -120,19 +129,17 @@ void Block::destroy()
     SAFE_RELEASE( texture_ );
 }
 
-//アニメーション処理
 void Block::Animation()
 {
-
     //アニメーション処理
-    if( ++count >= 10) {
+    if( ++count >= 25 ) {
         switch( key_state ) {
         case Left: position_.x -= plus; break;
         case Right: position_.x += plus; break;
         case Down: position_.y += plus; break;
-        case Up:position_.y -= plus; break;
+        case Up:position_.y = 672; break;
         case None:position_.y += plus; break;
-        case B:position_.y += plus; break;
+
         }
         count = 0;
     }

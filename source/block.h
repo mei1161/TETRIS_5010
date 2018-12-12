@@ -1,7 +1,7 @@
 #include"sprite.h"
 #include"keyboard.h"
 #include"texture.h"
-
+#include"pad.h"
 //名前空間
 using namespace DirectX;
 using namespace SimpleMath;
@@ -28,8 +28,8 @@ public:
     void update();  //更新
     void draw();    //描画    
     void destroy(); //破棄
-    void Animation();//アニメーション処理
-    void judge();//ブロック判定
+    void Animation();
+  
 
 
 };
