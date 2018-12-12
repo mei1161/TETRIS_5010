@@ -89,8 +89,6 @@ void Block::update()
             Animation();
     }
    Collusion();//“–‚½‚è”»’è
-   
-           
     }
 //“–‚½‚è”»’è
 void Block::Collusion()
