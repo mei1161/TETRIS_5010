@@ -28,7 +28,8 @@ public:
     void update();  //更新
     void draw();    //描画    
     void destroy(); //破棄
-    void Animation();
+    void Animation();//アニメーション処理
+    void Collusion();//当たり判定
   
 
 

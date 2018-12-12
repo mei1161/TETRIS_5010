@@ -58,28 +58,28 @@ bool Block::init()
 void Block::update()
 {
     Keyboard::State key = Key::getKeyState();
-    int i, j;
+    GamePad::State pad = Pad::getState();
   
 
     
    if( position_.y <=670) {
 
-       if( key.Left )//¶ˆÚ“®
+       if( key.Left||pad.dpad.left)//¶ˆÚ“®
        {
            key_state = Left;
            Animation();
        }
-       else if( key.Right )//‰EˆÚ“®
+       else if( key.Right||pad.dpad.right)//‰EˆÚ“®
        {
            key_state = Right;
            Animation();
        }
-       else if( key.Up )//Ž©“®‚Å‰º‚É—Ž‚¿‚é
+       else if( key.Up||pad.dpad.up)//Ž©“®‚Å‰º‚É—Ž‚¿‚é
        {
            key_state = Up;
            Animation();
        }
-       else if( key.Down )//‰ºˆÚ“®
+       else if( key.Down||pad.dpad.down)//‰ºˆÚ“®
        {
            key_state = Down;
            Animation();
@@ -88,22 +88,29 @@ void Block::update()
             key_state = None;
             Animation();
     }
+   Collusion();//“–‚½‚è”»’è
    
-   //“–‚½‚è”»’è
-   if( position_.x <= 486 )//‰E˜e
-   {
-       position_.x += plus;
-   }
-   if( position_.x >= 756 )//¶˜e
-   {
-       position_.x -= plus;
-   }
-   if( position_.y >= 670 )//‰º
-   {
-       position_.y = 672;
-   }
            
     }
+//“–‚½‚è”»’è
+void Block::Collusion()
+{
+    //“–‚½‚è”»’è
+    if( position_.x <= 486 )//‰E˜e
+    {
+        position_.x += plus;
+    }
+    if( position_.x >= 756 )//¶˜e
+    {
+        position_.x -= plus;
+    }
+    if( position_.y >= 670 )//‰º
+    {
+        position_.y = 672;
+    }
+}
+
+
 
 
 //•`‰æ
@@ -117,10 +124,7 @@ void Block::draw()
    
 
         Sprite::draw( texture_, position_, &rect );
-  
-   
-    
-    
+
 }
 
 //”jŠü
