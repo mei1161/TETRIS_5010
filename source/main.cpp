@@ -20,6 +20,7 @@
 #include"block.h"
 #include"field.h"
 #include"player.h"
+#include"button.h"
 
 
 
@@ -153,7 +154,12 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
          //エラー
          return 0;
      }
-
+     //ボタンクラス初期化
+     Button button;
+     if( !button.init() )
+     {
+         return 0;
+     }
 
      // Keyboardクラスの初期化
     if( !Key::init() )
@@ -229,7 +235,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                 Key::update();      // キーボード更新
            //     Adx::update();      // サウンド更新
 
-
+                button.update();
                 block.update();
                 /////// !! 後で修正 !! /////////////
                 // シーン処理
@@ -340,6 +346,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                 /////////////////////////////////////　
                 field.draw();//フィールド描画
                 block.draw();//ブロック描画
+                button.draw();//ボタン描画
                 Sprite::end();      // スプライト描画終了
                 Direct3D::present();// 画面更新
             }
@@ -356,6 +363,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     field.destroy();
     block.destroy();
     Key::destroy();
+    button.destroy();
     //   Font::destroy();
     Common::destroy();
     Sprite::destroy();
