@@ -71,7 +71,7 @@ void Block::update()
 
   
 
-    if( position_.y <= 670 ) {
+    if( position_.y <= 695 ) {
 
         if( key.Left || pad.dpad.left )//左移動
         {
@@ -114,14 +114,12 @@ void Block::Collusion()
     {
         position_.x -= plus;
     }
-    if( position_.y >= 670 )//下
+    if( position_.y >= 695 )//下
     {
         position_.y = 672;
-        flag = true;
+		flag = true;
     }
 
-
-  
 }
 
 
@@ -156,7 +154,7 @@ void Block::draw()
          }
          if( block[ i ][ j ] == 1 )
          {
-             position2.y= (i * 25) + 511;
+             position2.x= (i * 25) + 511;
              position2.y = (j * 25) + 173;
              Sprite::draw( texture_, position2, &rect );
          }
@@ -194,8 +192,8 @@ void Block::Storing()
 
     if( flag == true )
     {
-        i = (position_.x - 536) / 25;
-        j = (position_.y-148) / 25;
+        i = (position_.x+536) / 25;
+        j = (position_.y+173) / 25;
         block[ i ][ j ] = 1;//中身の値を増やす
         position_.y = 173L;//ブロック座標
         position_.x = 511L;
