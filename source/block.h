@@ -21,7 +21,10 @@ private:
     int count;
     int block[ 22 ][ 12 ];
     bool flag;
-
+    Vector2 position2;
+    bool r_flag;//リセットフラグ
+    Vector2 sposition_;//初期ポジション
+    Vector2 Aposition_;
 public:
     Block();   //コンストラクタ
     bool init();    //初期化
@@ -30,7 +33,7 @@ public:
     void destroy(); //破棄
     void Animation();//アニメーション処理
     void Collusion();//当たり判定
-  
+    void Storing();//配列に格納
 
 
 };

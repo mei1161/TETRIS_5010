@@ -11,7 +11,7 @@ enum
 //定数
 
 
-
+const int WALL = 99;//当たり判定のあるブロック
 
 //コンストラクタ
 Block::Block()
@@ -24,6 +24,8 @@ Block::Block()
     move_ = false;
     count = 0;
     flag = false;
+    r_flag = false;
+    
 }
 
 //初期化
@@ -38,19 +40,26 @@ bool Block::init()
     int i;//ループカウンタ
     int j;
     for( i = 0; i < 22; i++ )
-    {
         for( j = 0; j < 12; j++ )
         {
-            block[ i ][ j ] = 0;
+            block[ i ][ j ] =0;
 
-            if( i == 0 || i == 21 || j ==11 )//衝突判定のある場所に99を代入
+            if( i == 21 )
             {
-                block[ i ][ j ] = 99;
+                block[ i ][ j ] = WALL;
+          }
+            if( j == 0 || j == 11 )
+            {
+                block[ i ][ j ] =WALL;
             }
+
+
+            
         }
-        block[ 1 ][ 0 ] = 1;
-    }
+    
+    
     return true;
+    
 }
 
 
@@ -59,37 +68,40 @@ void Block::update()
 {
     Keyboard::State key = Key::getKeyState();
     GamePad::State pad = Pad::getState();
+
   
 
-    
-   if( position_.y <=670) {
+    if( position_.y <= 670 ) {
 
-       if( key.Left||pad.dpad.left)//左移動
-       {
-           key_state = Left;
-           Animation();
-       }
-       else if( key.Right||pad.dpad.right)//右移動
-       {
-           key_state = Right;
-           Animation();
-       }
-       else if( key.Up||pad.dpad.up)//自動で下に落ちる
-       {
-           key_state = Up;
-           Animation();
-       }
-       else if( key.Down||pad.dpad.down)//下移動
-       {
-           key_state = Down;
-           Animation();
-       }
-       else
-            key_state = None;
+        if( key.Left || pad.dpad.left )//左移動
+        {
+            key_state = Left;
             Animation();
+        }
+        else if( key.Right || pad.dpad.right )//右移動
+        {
+            key_state = Right;
+            Animation();
+        }
+        else if( key.Up || pad.dpad.up )//自動で下に落ちる
+        {
+            key_state = Up;
+            Animation();
+        }
+        else if( key.Down || pad.dpad.down )//下移動
+        {
+            key_state = Down;
+            Animation();
+        }
+        else
+            key_state = None;
+        Animation();
     }
-   Collusion();//当たり判定
-    }
+    Collusion();//当たり判定
+    Storing();
+
+}
+
 //当たり判定
 void Block::Collusion()
 {
@@ -105,7 +117,11 @@ void Block::Collusion()
     if( position_.y >= 670 )//下
     {
         position_.y = 672;
+        flag = true;
     }
+
+
+  
 }
 
 
@@ -119,9 +135,34 @@ void Block::draw()
     rect.left = 688L;
     rect.right = rect.left + 25L;
     rect.bottom = rect.top + 25L;
-   
 
-        Sprite::draw( texture_, position_, &rect );
+
+ Sprite::draw( texture_, position_, &rect );
+ RECT Arect;//ブロックの描画
+ Arect.top = 957L;
+ Arect.left = 713L;
+ Arect.right = Arect.left + 25L;
+ Arect.bottom = Arect.top + 25L;
+
+ int i, j;
+ for( i = 0; i < 22; i++ ) {
+     for( j = 0; j < 12; j++ )
+     {
+         if( block[ i ][ j ] == WALL )
+         {
+             Aposition_.x = (j * 25) + 487;
+             Aposition_.y = (i * 25) + 173;
+             Sprite::draw( texture_, Aposition_, &Arect );
+         }
+         if( block[ i ][ j ] == 1 )
+         {
+             position2.y= (i * 25) + 511;
+             position2.y = (j * 25) + 173;
+             Sprite::draw( texture_, position2, &rect );
+         }
+     }
+ }
+ 
 
 }
 
@@ -146,3 +187,21 @@ void Block::Animation()
         count = 0;
     }
 }
+//配列に格納
+void Block::Storing()
+{
+    int i, j;
+
+    if( flag == true )
+    {
+        i = (position_.x - 536) / 25;
+        j = (position_.y-148) / 25;
+        block[ i ][ j ] = 1;//中身の値を増やす
+        position_.y = 173L;//ブロック座標
+        position_.x = 511L;
+    }
+
+     flag = false;
+}
+
+
