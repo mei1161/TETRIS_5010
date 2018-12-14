@@ -25,6 +25,7 @@ Block::Block()
     count = 0;
     flag = false;
     r_flag = false;
+    cdelete = 0;
     
 }
 
@@ -114,7 +115,7 @@ void Block::Collusion()
     {
         position_.x -= plus;
     }
-    if( position_.y >= 695 )//下
+    if( position_.y >= 670 )//下
     {
         position_.y = 672;
 		flag = true;
@@ -148,16 +149,17 @@ void Block::draw()
      {
          if( block[ i ][ j ] == WALL )
          {
-             Aposition_.x = (j * 25) + 487;
+             Aposition_.x = (j* 25) + 487;
              Aposition_.y = (i * 25) + 173;
              Sprite::draw( texture_, Aposition_, &Arect );
          }
          if( block[ i ][ j ] == 1 )
          {
-             position2.x= (i * 25) + 511;
-             position2.y = (j * 25) + 173;
+             position2.x= (j* 25) + 487;
+             position2.y = (i* 25) + 173;
              Sprite::draw( texture_, position2, &rect );
          }
+
      }
  }
  
@@ -192,14 +194,51 @@ void Block::Storing()
 
     if( flag == true )
     {
-        i = (position_.x+536) / 25;
-        j = (position_.y+173) / 25;
-        block[ i ][ j ] = 1;//中身の値を増やす
+        i= (position_.y-148) / 25;
+        j= (position_.x-486) / 25;
+        block[ i ][ j ] = 1;//中身の値を増やす  
+        Load();
         position_.y = 173L;//ブロック座標
         position_.x = 511L;
+      
+
     }
 
      flag = false;
 }
 
+//削除処理
+void Block::Delete()
+{
+
+
+
+
+}
+void Block::Load()
+{
+  
+    int k;
+    i = (position_.y - 148) / 25;
+    for( k = 0; k < 12; k++ ) {
+        if( block[ i ][ k + 1 ] == 1 )
+        {
+            cdelete++;
+        }
+    }
+    if( cdelete == 10 )
+    {
+        for( k = 1; k < 11; k++ )
+        {
+            if( block[ i ][ k ] == 1 )
+            {
+                block[ i ][ k ] = 0;
+               
+            }
+        }
+        cdelete = 0;
+    }
+
+
+}
 
