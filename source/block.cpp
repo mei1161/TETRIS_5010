@@ -194,10 +194,10 @@ void Block::Storing()
 
     if( flag == true )
     {
-        i= (position_.y-148) / 25;
+        i= (position_.y-148) / 25;//座標から、一致する入れる番号を求める
         j= (position_.x-486) / 25;
         block[ i ][ j ] = 1;//中身の値を増やす  
-        Load();
+		Delete();//消す処理
         position_.y = 173L;//ブロック座標
         position_.x = 511L;
       
@@ -210,6 +210,27 @@ void Block::Storing()
 //削除処理
 void Block::Delete()
 {
+	int k;
+	i = (position_.y - 148) / 25;
+	k = (position_.x - 486) / 25; {
+		if (block[i][k] == 1)
+		{
+			cdelete++;
+		}
+	}
+	if (cdelete == 11)
+	{
+		cdelete = 0;
+		for (k = 1; k < 11; k++)
+		{
+			if (block[i][k] == 1)
+			{
+				block[i][k] = 0;
+
+			}
+		}
+		
+	}
 
 
 
@@ -218,27 +239,7 @@ void Block::Delete()
 void Block::Load()
 {
   
-    int k;
-    i = (position_.y - 148) / 25;
-    for( k = 0; k < 12; k++ ) {
-        if( block[ i ][ k + 1 ] == 1 )
-        {
-            cdelete++;
-        }
-    }
-    if( cdelete == 10 )
-    {
-        for( k = 1; k < 11; k++ )
-        {
-            if( block[ i ][ k ] == 1 )
-            {
-                block[ i ][ k ] = 0;
-               
-            }
-        }
-        cdelete = 0;
-    }
-
+   
 
 }
 
