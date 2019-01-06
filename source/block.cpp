@@ -196,7 +196,8 @@ void Block::Storing()
     {
         i= (position_.y-148) / 25;//座標から、一致する入れる番号を求める
         j= (position_.x-486) / 25;
-        block[ i ][ j ] = 1;//中身の値を増やす  
+        block[ i ][ j ] = 1;//中身の値を増やす
+		Load();//積む処理
 		Delete();//消す処理
         position_.y = 173L;//ブロック座標
         position_.x = 511L;
@@ -218,7 +219,7 @@ void Block::Delete()
 			cdelete++;
 		}
 	}
-	if (cdelete == 11)
+	if (cdelete == 10)
 	{
 		cdelete = 0;
 		for (k = 1; k < 11; k++)
@@ -236,10 +237,9 @@ void Block::Delete()
 
 
 }
+//ブロックを積む
 void Block::Load()
 {
-  
-   
-
+	//下の配列が１または壁(99）当たり判定ありの場合、１つ上の配列に情報を格納
 }
 
