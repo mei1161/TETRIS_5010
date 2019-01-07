@@ -28,6 +28,7 @@ private:
     int i;
     int j;//ポジションから配列番号を求める時の格納変数
     int cdelete;
+    
 public:
     Block();   //コンストラクタ
     bool init();    //初期化
@@ -38,5 +39,5 @@ public:
     void Collusion();//当たり判定
     void Storing();//配列に格納
     void Delete();//消す
-    void Load();//積む
+    void   Load();//積む
 };
