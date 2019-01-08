@@ -100,7 +100,7 @@ void Block::update()
         }
         else
             key_state = None;
-        Check();
+            Check();
         Animation();
     }
     Collusion();//“–‚½‚è”»’è
@@ -244,7 +244,7 @@ void Block::Storing()
         Load();//Ï‚Şˆ—
        
 
-        if( block[ i ][ j ] == 1 )
+        if( block[ i ][ j ] == 1 )//‚±‚±‚Ì•ÏX•K—v
         {
             cdelete++;
         }
