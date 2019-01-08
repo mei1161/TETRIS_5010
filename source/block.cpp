@@ -26,7 +26,7 @@ Block::Block()
     flag = false;
     r_flag = false;
     cdelete = 0;
-    
+    Aflag = true;
 }
 
 //初期化
@@ -77,29 +77,69 @@ void Block::update()
         if( key.Left || pad.dpad.left )//左移動
         {
             key_state = Left;
+            Check();
             Animation();
         }
         else if( key.Right || pad.dpad.right )//右移動
         {
             key_state = Right;
+            Check();
             Animation();
         }
         else if( key.Up || pad.dpad.up )//自動で下に落ちる
         {
             key_state = Up;
+            Check();
             Animation();
         }
         else if( key.Down || pad.dpad.down )//下移動
         {
             key_state = Down;
+            Check();
             Animation();
         }
         else
             key_state = None;
+        Check();
         Animation();
     }
     Collusion();//当たり判定
     Storing();
+
+}
+//確認する用の関数
+void Block::Check()
+{
+    int i2, j2;//一つ先の配列番号を格納する用の変数
+    i = (position_.y - 148) / 25;//座標から、一致する入れる番号を求める
+    j = (position_.x - 486) / 25;
+    switch( key_state )
+    {
+    case Down:i2 = i + 1; j2 = j; break;
+    case None:i2 = i; j2 = j; break;
+    case Left:i2 = i; j2 = j - 1; break;
+    case Right:i2 = i; j2 = j + 1; break;
+    }
+    if(block[i2][j2]==99 )
+    {
+        if( key_state == Left )
+        {
+            j2 = j++;
+        }
+        if( key_state == Right )
+        {
+            j2 = j--;
+        }
+    }
+    if( block[ i2 ][ j2 ] == 1 )
+    {
+        flag = true;
+        Aflag = false;
+    }
+    else
+        Aflag = true;
+    
+
 
 }
 
@@ -174,6 +214,9 @@ void Block::destroy()
 
 void Block::Animation()
 {
+    if( Aflag == true )
+    {
+
     //アニメーション処理
     if( ++count >= 25 ) {
         switch( key_state ) {
@@ -185,6 +228,7 @@ void Block::Animation()
 
         }
         count = 0;
+    }
     }
 }
 //配列に格納
