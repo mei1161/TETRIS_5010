@@ -28,6 +28,7 @@ private:
     int i;
     int j;//ポジションから配列番号を求める時の格納変数
     int cdelete;
+    bool Aflag;//アニメーションフラグ
     
 public:
     Block();   //コンストラクタ
@@ -40,4 +41,5 @@ public:
     void Storing();//配列に格納
     void Delete();//消す
     void   Load();//積む
+    void Check();//チェックする
 };
