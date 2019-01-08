@@ -242,14 +242,7 @@ void Block::Storing()
         j= (position_.x-486) / 25;
         block[ i ][ j ] = 1;
         Load();//積む処理
-       
 
-        if( block[ i ][ j ] == 1 )//ここの変更必要
-        {
-            cdelete++;
-        }
-        
-		
 		Delete();//消す処理
         position_.y = 173L;//ブロック座標
         position_.x = 511L;
