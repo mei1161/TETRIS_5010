@@ -104,6 +104,7 @@ void Block::update()
 }
 
 //当たり判定
+//移動する前に、１か９９が入っているかチェックし、入っていなければ移動する処理に進むようにする
 void Block::Collusion()
 {
     //当たり判定
@@ -147,13 +148,13 @@ void Block::draw()
  for( i = 0; i < 22; i++ ) {
      for( j = 0; j < 12; j++ )
      {
-         if( block[ i ][ j ] == WALL )
+         if( block[ i ][ j ] == WALL )//当たり判定の壁描画
          {
              Aposition_.x = (j* 25) + 487;
              Aposition_.y = (i * 25) + 173;
              Sprite::draw( texture_, Aposition_, &Arect );
          }
-         if( block[ i ][ j ] == 1 )
+         if( block[ i ][ j ] == 1 )//ブロックの表示
          {
              position2.x= (j* 25) + 487;
              position2.y = (i* 25) + 173;
