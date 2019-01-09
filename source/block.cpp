@@ -284,16 +284,20 @@ void Block::Delete(int count)
 				block[count][k] = 0;
 			}
 		}
-        Drop();
+        Drop(count);
 	}
 
 }
 //消された場合、積んであるブロックを下に落とす処理
-void Block::Drop()
+void Block::Drop(int count)
 {
-    int p, z;
-
-
-
-
+    for( i = 1; i < 21; i++ )
+        for( j = 1; j < 11; j++ )
+        {
+            if( block[ i ][ j ] == 1 )
+            {
+                block[ i + 1 ][ j ] = block[ i ][ j ];
+                block[ i ][ j ] = block[ i - 1 ][ j ];
+            }
+    }
 }

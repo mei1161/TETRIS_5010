@@ -41,5 +41,5 @@ public:
     void Storing();//配列に格納
     void Delete(int count);//消す
     void Check();//チェックする
-    void Drop();//積んであるブロックを下に落とす
+    void Drop(int count);//積んであるブロックを下に落とす
 };
