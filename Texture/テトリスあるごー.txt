@@ -1,1 +1,2 @@
 Iを保持して、ｊのみをカウント、０が配列の要素に入ってたら、breakして、ループを脱出
+https://www.microsoft.com/ja-jp/safety/respond/antivirus.aspx

@@ -39,7 +39,7 @@ public:
     void Animation();//アニメーション処理
     void Collusion();//当たり判定
     void Storing();//配列に格納
-    void Delete();//消す
+    void Delete(int count);//消す
     void   Load();//積む
     void Check();//チェックする
 };

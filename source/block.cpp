@@ -116,25 +116,25 @@ void Block::Check()
     switch( key_state )
     {
     case Down:i2 = i + 1; j2 = j; break;
-    case None:i2 = i; j2 = j; break;
+    case None:i2 = i+1; j2 = j; break;
     case Left:i2 = i; j2 = j - 1; break;
     case Right:i2 = i; j2 = j + 1; break;
     }
-    if(block[i2][j2]==99 )
+    if(block[i2][j2]==99 )//壁だった場合
     {
-        if( key_state == Left )
+        if( key_state == Left )//一つ右側の座標にする
         {
             j2 = j++;
         }
-        if( key_state == Right )
+        if( key_state == Right )//一つ左側の座標にする
         {
             j2 = j--;
         }
     }
-    if( block[ i2 ][ j2 ] == 1 )
+    if( block[ i2 ][ j2 ] == 1 )//一つ先の配列が、ブロックだった場合
     {
-        flag = true;
-        Aflag = false;
+        flag = true;//配列に格納
+        Aflag = false;//アニメションを行わない
     }
     else
         Aflag = true;
@@ -187,13 +187,13 @@ void Block::draw()
  for( i = 0; i < 22; i++ ) {
      for( j = 0; j < 12; j++ )
      {
-         if( block[ i ][ j ] == WALL )
+         if( block[ i ][ j ] == WALL )//当たり判定の壁の表示
          {
              Aposition_.x = (j* 25) + 487;
              Aposition_.y = (i * 25) + 173;
              Sprite::draw( texture_, Aposition_, &Arect );
          }
-         if( block[ i ][ j ] == 1 )
+         if( block[ i ][ j ] == 1 )//ブロックの表示
          {
              position2.x= (j* 25) + 487;
              position2.y = (i* 25) + 173;
@@ -235,15 +235,30 @@ void Block::Animation()
 void Block::Storing()
 {
     int i, j;
-
+    int count;//iのカウント用変数
     if( flag == true )
     {
         i= (position_.y-148) / 25;//座標から、一致する入れる番号を求める
         j= (position_.x-486) / 25;
-        block[ i ][ j ] = 1;
-        Load();//積む処理
+        block[ i ][ j ] = 1;//ブロックの中身を入れる
+        
+        count = i;
+        for( j = 1; j < 11; j++ )//ブロックが入った配列の要素を左から確認
+        {
+          
+            if( block[count][ j ] == 1 )//ブロックの中身が１ならdeletecountインクリメント
+            {
+                cdelete++;
+            }
+            else//ブロックが入っていない場合は、deletecountの初期化を行い、ループから抜ける
+                cdelete = 0;
+                
+        }
 
-		Delete();//消す処理
+       
+
+
+		Delete(count);//消す処理
         position_.y = 173L;//ブロック座標
         position_.x = 511L;
       
@@ -254,35 +269,22 @@ void Block::Storing()
 }
 
 //削除処理
-void Block::Delete()
+void Block::Delete(int count)
 {
-    i = (position_.y - 148) / 25;
+
+    
     int k;
 	if (cdelete>=10)//カウントが10以上なら
 	{
 		cdelete = 0;//カウントの初期化
 		for (k = 1; k < 11; k++)
 		{
-			if (block[i][k] == 1)//ブロックの中身の初期化
+			if (block[count][k] == 1)//ブロックの中身の初期化
 			{
-				block[i][k] = 0;
+				block[count][k] = 0;
 			}
 		}
 		
 	}
 
 }
-//ブロックを積む
-void   Block::Load()
-{
-    i = (position_.y - 148) / 25;//座標から、一致する入れる番号を求める
-    j = (position_.x - 486) / 25;
-	//下の配列が１または壁(99）当たり判定ありの場合、１つ上の配列に情報を格納
-    if( block[ i + 1 ][ j ] == 1 )
-    {
-        block[ i - 1 ][ j ] == 1;
-    }
-    else
-        block[ i ][ j ] == 1;
-}
-
