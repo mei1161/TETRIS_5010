@@ -40,6 +40,6 @@ public:
     void Collusion();//当たり判定
     void Storing();//配列に格納
     void Delete(int count);//消す
-    void   Load();//積む
     void Check();//チェックする
+    void Drop();//積んであるブロックを下に落とす
 };
