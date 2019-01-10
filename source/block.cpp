@@ -294,9 +294,9 @@ void Block::Drop(int count)
     for( i = count; i >0; i--)
         for( j = 1; j < 11; j++ )
         {
-            if( block[ i ][ j ] == 1 ) {
-                block[ i +1][ j ] = block[ i ][ j ];
-                block[ i ][ j ] = block[ i - 1 ][ j ];
+            if( block[ i ][ j ] == 1 ) {//ブロックが入っている場合
+                block[ i +1][ j ] = block[ i ][ j ];//ブロックの情報を一つ下の配列にいれる
+                block[ i ][ j ] = block[ i - 1 ][ j ];//ブロックの情報を上書き
             }
     }
 }
