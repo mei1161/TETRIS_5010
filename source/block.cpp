@@ -103,7 +103,7 @@ void Block::update()
             Check();
         Animation();
     }
-    Collusion();//当たり判定
+   Collusion();//当たり判定
     Storing();
 
 }
@@ -119,8 +119,20 @@ void Block::Check()
     case None:i2 = i+1; j2 = j; break;
     case Left:i2 = i; j2 = j - 1; break;
     case Right:i2 = i; j2 = j + 1; break;
+    case Up:  j2=j;
+     for( i2 = i; i2 < 21; i2++ )
+    {
+         if( block[ i2 ][ j2 ]==0)
+         {
+             Aflag = true;
+             Animation();
+         }
+
+ 
+     }break;
     }
-    if(block[i2][j2]==99)//壁だった場合
+
+    if(block[i2][j2]==99 )//壁だった場合
     {
         if( key_state == Left )//一つ右側の座標にする
         {
@@ -133,8 +145,8 @@ void Block::Check()
     }
     if( block[ i2 ][ j2 ] == 1 )//一つ先の配列が、ブロックだった場合
     {
-            flag = true;//配列に格納
-            Aflag = false;//アニメションを行わない
+        flag = true;//配列に格納
+        Aflag = false;//アニメションを行わない
     }
     else
         Aflag = true;
@@ -187,7 +199,7 @@ void Block::draw()
  for( i = 0; i < 22; i++ ) {
      for( j = 0; j < 12; j++ )
      {
-         if( block[ i ][ j ] == WALL )//当たり判定の壁の表示
+        if( block[ i ][ j ] == WALL )//当たり判定の壁の表示
          {
              Aposition_.x = (j* 25) + 487;
              Aposition_.y = (i * 25) + 173;
@@ -223,7 +235,7 @@ void Block::Animation()
         case Left: position_.x -= plus; break;
         case Right: position_.x += plus; break;
         case Down: position_.y += plus; break;
-        case Up:position_.y = 672; break;
+        case Up:position_.y+=plus; break;
         case None:position_.y += plus; break;
 
         }
@@ -291,12 +303,12 @@ void Block::Delete(int count)
 //消された場合、積んであるブロックを下に落とす処理
 void Block::Drop(int count)
 {
-    for( i = count; i >0; i--)
+    for( i = count; i >0; i-- )
         for( j = 1; j < 11; j++ )
         {
-            if( block[ i ][ j ] == 1 ) {//ブロックが入っている場合
-                block[ i +1][ j ] = block[ i ][ j ];//ブロックの情報を一つ下の配列にいれる
-                block[ i ][ j ] = block[ i - 1 ][ j ];//ブロックの情報を上書き
+            if( block[ i ][ j ] == 1 ) {
+                block[ i + 1 ][ j ] = block[ i ][ j ];
+                block[ i ][ j ] = block[ i - 1 ][ j ];
             }
     }
 }
