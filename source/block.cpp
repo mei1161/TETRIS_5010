@@ -71,7 +71,7 @@ void Block::update()
     GamePad::State pad = Pad::getState();
 
   
-
+    //©“®—‰ºˆ—‚Ì’Ç‰Á—\’è
     if( position_.y <= 695 ) {
 
         if( key.Left || pad.dpad.left )//¶ˆÚ“®
@@ -137,6 +137,7 @@ void Block::Check()
         if( key_state == Left )//ˆê‚Â‰E‘¤‚ÌÀ•W‚É‚·‚é
         {
             j2 = j++;
+
         }
         if( key_state == Right )//ˆê‚Â¶‘¤‚ÌÀ•W‚É‚·‚é
         {
