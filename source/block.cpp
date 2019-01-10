@@ -120,7 +120,7 @@ void Block::Check()
     case Left:i2 = i; j2 = j - 1; break;
     case Right:i2 = i; j2 = j + 1; break;
     }
-    if(block[i2][j2]==99 )//壁だった場合
+    if(block[i2][j2]==99)//壁だった場合
     {
         if( key_state == Left )//一つ右側の座標にする
         {
@@ -133,8 +133,8 @@ void Block::Check()
     }
     if( block[ i2 ][ j2 ] == 1 )//一つ先の配列が、ブロックだった場合
     {
-        flag = true;//配列に格納
-        Aflag = false;//アニメションを行わない
+            flag = true;//配列に格納
+            Aflag = false;//アニメションを行わない
     }
     else
         Aflag = true;
@@ -291,12 +291,11 @@ void Block::Delete(int count)
 //消された場合、積んであるブロックを下に落とす処理
 void Block::Drop(int count)
 {
-    for( i = 1; i < 21; i++ )
+    for( i = count; i >0; i--)
         for( j = 1; j < 11; j++ )
         {
-            if( block[ i ][ j ] == 1 )
-            {
-                block[ i + 1 ][ j ] = block[ i ][ j ];
+            if( block[ i ][ j ] == 1 ) {
+                block[ i +1][ j ] = block[ i ][ j ];
                 block[ i ][ j ] = block[ i - 1 ][ j ];
             }
     }
