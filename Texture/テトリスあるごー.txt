@@ -7,3 +7,5 @@ https://www.microsoft.com/ja-jp/safety/respond/antivirus.aspx
 上から、一列そろっている行がないか確認
 一列そろっていたら、ループを抜けて、消す処理実行
 消した行に一つ上の配列の情報を格納
+ジャヴァテトリス(参考サイト)
+https://nompor.com/2018/10/21/post-4716/

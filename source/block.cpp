@@ -27,6 +27,7 @@ Block::Block()
     r_flag = false;
     cdelete = 0;
     Aflag = true;
+    cauto = 0;
 }
 
 //初期化
@@ -65,47 +66,73 @@ bool Block::init()
 
 
 //更新
+//自動落下処理
+//キーで動く処理
 void Block::update()
 {
     Keyboard::State key = Key::getKeyState();
     GamePad::State pad = Pad::getState();
-
-  
-    //自動落下処理の追加予定
-    if( position_.y <= 695 ) {
-
-        if( key.Left || pad.dpad.left )//左移動
-        {
-            key_state = Left;
-            Check();
-            Animation();
-        }
-        else if( key.Right || pad.dpad.right )//右移動
+    //自動落下
+    if( ++cauto > 60 )
+    {
+        key_state = None;
+        position_.y += plus;//一つ移動
+        cauto = 0;//カウンタ初期化
+        Check();//確認
+    }
+    if( ++count >= 5 )
+    {
+        if( key.Right )//右
         {
             key_state = Right;
-            Check();
             Animation();
+            Check();
         }
-        else if( key.Up || pad.dpad.up )//自動で下に落ちる
+        else if( key.Left )
         {
-            key_state = Up;
-            Check();
+            key_state = Left;
             Animation();
+            Check();
         }
-        else if( key.Down || pad.dpad.down )//下移動
+        else if( key.Down )
         {
             key_state = Down;
-            Check();
             Animation();
-        }
-        else
-            key_state = None;
             Check();
-        Animation();
-    }
-   Collusion();//当たり判定
-    Storing();
+        }
 
+        else if( key.Up )
+        {
+            key_state = Up;
+            Animation();
+            Check();
+        }
+
+
+        Collusion();//当たり判定
+        Storing();
+    }
+
+}
+//アニメーション処理
+
+void Block::Animation()
+{
+    if( Aflag == true )
+    {
+
+        //アニメーション処理
+        if( ++count >= 25 ) {
+            switch( key_state ) {
+            case Left: position_.x -= plus; break;
+            case Right: position_.x += plus; break;
+            case Down: position_.y += plus; break;
+           
+
+            }
+            count = 0;
+        }
+    }
 }
 //確認する用の関数
 void Block::Check()
@@ -190,7 +217,7 @@ void Block::draw()
 
 
  Sprite::draw( texture_, position_, &rect );
- RECT Arect;//ブロックの描画
+ RECT Arect;//ブロックの描画//壁描画
  Arect.top = 957L;
  Arect.left = 713L;
  Arect.right = Arect.left + 25L;
@@ -225,25 +252,7 @@ void Block::destroy()
     SAFE_RELEASE( texture_ );
 }
 
-void Block::Animation()
-{
-    if( Aflag == true )
-    {
 
-    //アニメーション処理
-    if( ++count >= 25 ) {
-        switch( key_state ) {
-        case Left: position_.x -= plus; break;
-        case Right: position_.x += plus; break;
-        case Down: position_.y += plus; break;
-        case Up:position_.y+=plus; break;
-        case None:position_.y += plus; break;
-
-        }
-        count = 0;
-    }
-    }
-}
 //配列に格納
 void Block::Storing()
 {

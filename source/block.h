@@ -19,7 +19,8 @@ private:
     int Animation_counter;//アニメーションカウンタ
     int kAnimationSpeed;
     int count;
-    int block[ 22 ][ 12 ];
+    int block[ 22 ][ 12 ];//現在フィールド
+    int field[ 22 ][ 12 ];//固定フィールド
     bool flag;
     Vector2 position2;
     bool r_flag;//リセットフラグ
@@ -29,6 +30,7 @@ private:
     int j;//ポジションから配列番号を求める時の格納変数
     int cdelete;
     bool Aflag;//アニメーションフラグ
+    int cauto;//自動落下用カウンタ
     
 public:
     Block();   //コンストラクタ

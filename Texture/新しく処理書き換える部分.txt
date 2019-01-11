@@ -1,0 +1,32 @@
+ //Ž©“®—Ž‰ºˆ—‚Ì’Ç‰Á—\’è
+  /*  if( position_.y <= 695 ) {
+
+        if( key.Left || pad.dpad.left )//¶ˆÚ“®
+        {
+            key_state = Left;
+            Check();
+            Animation();
+        }
+        else if( key.Right || pad.dpad.right )//‰EˆÚ“®
+        {
+            key_state = Right;
+            Check();
+            Animation();
+        }
+        else if( key.Up || pad.dpad.up )//Ž©“®‚Å‰º‚É—Ž‚¿‚é
+        {
+            key_state = Up;
+            Check();
+            Animation();
+        }
+        else if( key.Down || pad.dpad.down )//‰ºˆÚ“®
+        {
+            key_state = Down;
+            Check();
+            Animation();
+        }
+        else
+            key_state = None;
+            Check();
+        Animation();
+    }*/
