@@ -110,7 +110,7 @@ void Block::update()
             Animation();
             Check();
         }
-
+        Check();
         Collusion();//当たり判定
         Storing();
     }
@@ -140,6 +140,7 @@ void Block::Animation()
 void Block::Check()
 {
     int i2, j2;//一つ先の配列番号を格納する用の変数
+    i2 = 0; j2 = 0;
     i = (position_.y - 148) / 25;//座標から、一致する入れる番号を求める
     j = (position_.x - 486) / 25;
     switch( key_state )
@@ -148,16 +149,11 @@ void Block::Check()
     case None:i2 = i+1; j2 = j; break;
     case Left:i2 = i; j2 = j - 1; break;
     case Right:i2 = i; j2 = j + 1; break;
-    case Up:i2 = i+1; j2 = j;
-        
-        break;
-
-
- 
-    
+    case Up:i2 = i + 1; j2 = j; break;
+   
     }
 
-    if(block[i2][j2]==99 )//壁だった場合
+    if(field[i2][j2]==99 )//壁だった場合
     {
         if( key_state == Left )//一つ右側の座標にする
         {
