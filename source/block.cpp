@@ -45,14 +45,17 @@ bool Block::init()
         for( j = 0; j < 12; j++ )
         {
             block[ i ][ j ] =0;
+            field[ i ][ j ] = 0;
 
             if( i == 21 )
             {
                 block[ i ][ j ] = WALL;
+                field[ i ][ j ] = WALL;
           }
             if( j == 0 || j == 11 )
             {
-                block[ i ][ j ] =WALL;
+                block[ i ][ j ] =WALL;//現在動いてるブロック
+                field[ i ][ j ] = WALL;//固定されているブロック
             }
 
 
@@ -108,7 +111,6 @@ void Block::update()
             Check();
         }
 
-
         Collusion();//当たり判定
         Storing();
     }
@@ -127,7 +129,7 @@ void Block::Animation()
             case Left: position_.x -= plus; break;
             case Right: position_.x += plus; break;
             case Down: position_.y += plus; break;
-           
+            case Up:position_.y += plus; break;
 
             }
             count = 0;
@@ -146,17 +148,13 @@ void Block::Check()
     case None:i2 = i+1; j2 = j; break;
     case Left:i2 = i; j2 = j - 1; break;
     case Right:i2 = i; j2 = j + 1; break;
-    case Up:  j2=j;
-     for( i2 = i; i2 < 21; i2++ )
-    {
-         if( block[ i2 ][ j2 ]==0)
-         {
-             Aflag = true;
-             Animation();
-         }
+    case Up:i2 = i+1; j2 = j;
+        
+        break;
+
 
  
-     }break;
+    
     }
 
     if(block[i2][j2]==99 )//壁だった場合
@@ -171,7 +169,7 @@ void Block::Check()
             j2 = j--;
         }
     }
-    if( block[ i2 ][ j2 ] == 1 )//一つ先の配列が、ブロックだった場合
+    if( field[ i2 ][ j2 ] == 1 )//一つ先の配列が、ブロックだった場合
     {
         flag = true;//配列に格納
         Aflag = false;//アニメションを行わない
@@ -233,7 +231,7 @@ void Block::draw()
              Aposition_.y = (i * 25) + 173;
              Sprite::draw( texture_, Aposition_, &Arect );
          }
-         if( block[ i ][ j ] == 1 )//ブロックの表示
+         if( field[ i ][ j ] == 1 )//ブロックの表示
          {
              position2.x= (j* 25) + 487;
              position2.y = (i* 25) + 173;
@@ -262,17 +260,17 @@ void Block::Storing()
     {
         i= (position_.y-148) / 25;//座標から、一致する入れる番号を求める
         j= (position_.x-486) / 25;
-        block[ i ][ j ] = 1;//ブロックの中身を入れる
+        field[ i ][ j ] = 1;//ブロックの中身を入れる
         
         count = i;
         for( j = 1; j < 11; j++ )//ブロックが入った配列の要素を左から確認
         {
           
-            if( block[count][ j ] == 1 )//ブロックの中身が１ならdeletecountインクリメント
+            if( field[count][ j ] == 1 )//ブロックの中身が１ならdeletecountインクリメント
             {
                 cdelete++;
             }
-            else//ブロックが入っていない場合は、deletecountの初期化を行い、ループから抜ける
+            else//ブロックが入っていない場合は、deletecountの初期化を行
                 cdelete = 0;
                 
         }
@@ -301,9 +299,9 @@ void Block::Delete(int count)
 		cdelete = 0;//カウントの初期化
 		for (k = 1; k < 11; k++)
 		{
-			if (block[count][k] == 1)//ブロックの中身の初期化
+			if (field[count][k] == 1)//ブロックの中身の初期化
 			{
-				block[count][k] = 0;
+				field[count][k] = 0;
 			}
 		}
         Drop(count);
@@ -316,9 +314,9 @@ void Block::Drop(int count)
     for( i = count; i >0; i-- )
         for( j = 1; j < 11; j++ )
         {
-            if( block[ i ][ j ] == 1 ) {
-                block[ i + 1 ][ j ] = block[ i ][ j ];
-                block[ i ][ j ] = block[ i - 1 ][ j ];
+            if( field[ i ][ j ] == 1 ) {
+                field[ i + 1 ][ j ] = field[ i ][ j ];
+                field[ i ][ j ] =field[ i - 1 ][ j ];
             }
     }
 }
