@@ -44,4 +44,5 @@ public:
     void Delete(int count);//消す
     void Check();//チェックする
     void Drop(int count);//積んであるブロックを下に落とす
+	bool can_fall();//落ちれるかどうか
 };

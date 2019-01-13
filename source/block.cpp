@@ -19,10 +19,10 @@ Block::Block()
     texture_ = NULL;
     position_.y =173L;//ブロック座標
     position_.x =511L;
-    plus =25.0F;
-    Animation_counter = 0;
-    move_ = false;
-    count = 0;
+    plus =25.0F;//移動量
+    Animation_counter = 0;//アニメーションカウンタ
+    move_ = false;//動けるかどうか
+    count = 0;//カウンタ
     flag = false;
     r_flag = false;
     cdelete = 0;
@@ -42,17 +42,17 @@ bool Block::init()
     int i;//ループカウンタ
     int j;
     for( i = 0; i < 22; i++ )
-        for( j = 0; j < 12; j++ )
+        for( j = 0; j < 12; j++ )//壁以外
         {
             block[ i ][ j ] =0;
             field[ i ][ j ] = 0;
 
-            if( i == 21 )
+            if( i == 21 )//壁
             {
                 block[ i ][ j ] = WALL;
                 field[ i ][ j ] = WALL;
           }
-            if( j == 0 || j == 11 )
+            if( j == 0 || j == 11 )//壁
             {
                 block[ i ][ j ] =WALL;//現在動いてるブロック
                 field[ i ][ j ] = WALL;//固定されているブロック
@@ -111,7 +111,7 @@ void Block::update()
             Check();
         }
         Check();
-        Collusion();//当たり判定
+		Collusion();//当たり判定
         Storing();
     }
 
@@ -136,7 +136,7 @@ void Block::Animation()
         }
     }
 }
-//確認する用の関数
+//確認する用の関数(配列)
 void Block::Check()
 {
     int i2, j2;//一つ先の配列番号を格納する用の変数
@@ -146,7 +146,7 @@ void Block::Check()
     switch( key_state )
     {
     case Down:i2 = i + 1; j2 = j; break;
-    case None:i2 = i+1; j2 = j; break;
+    case None:i2 = i+1; j2 = j; break;//自動落下
     case Left:i2 = i; j2 = j - 1; break;
     case Right:i2 = i; j2 = j + 1; break;
     case Up:i2 = i + 1; j2 = j; break;
@@ -157,22 +157,23 @@ void Block::Check()
     {
         if( key_state == Left )//一つ右側の座標にする
         {
-            j2 = j++;
+			j2++;
 
         }
         if( key_state == Right )//一つ左側の座標にする
         {
-            j2 = j--;
+			j2--;
         }
     }
-    if( field[ i2 ][ j2 ] == 1 )//一つ先の配列が、ブロックだった場合
+    if( field[ i2 ][ j2 ] == 1)//一つ先の配列が、ブロックだった場合
     {
         flag = true;//配列に格納
-        Aflag = false;//アニメションを行わない
+        Aflag = false;//アニメ-ションを行わない
     }
-    else
+    else{
         Aflag = true;
-    
+		}
+
 
 
 }
@@ -315,4 +316,18 @@ void Block::Drop(int count)
                 field[ i ][ j ] =field[ i - 1 ][ j ];
             }
     }
+}
+
+//落ちれるかどうか
+bool Block::can_fall()
+{
+	if (field[i + 1][j] == 99 || field[i + 1][j] == 1)
+	{
+		return false;
+	}
+	else {
+		return true;
+		field[i][j] == 1;
+
+	}
 }
