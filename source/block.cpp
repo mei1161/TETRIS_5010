@@ -1,6 +1,7 @@
 #include"block.h"
-
-enum
+#include"color.h"
+#include"color.cpp"
+enum keyboard
 {
     Left,
     Right,
@@ -8,10 +9,7 @@ enum
     Down,
     None,
 };
-//定数
 
-
-const int WALL = 99;//当たり判定のあるブロック
 
 //コンストラクタ
 Block::Block()
@@ -19,15 +17,8 @@ Block::Block()
     texture_ = NULL;
     position_.y =173L;//ブロック座標
     position_.x =511L;
-    plus =25.0F;//移動量
-    Animation_counter = 0;//アニメーションカウンタ
-    move_ = false;//動けるかどうか
-    count = 0;//カウンタ
-    flag = false;
-    r_flag = false;
-    cdelete = 0;
-    Aflag = true;
-    cauto = 0;
+	count = 0;
+	exist_fallingblock = false;
 }
 
 //初期化
@@ -39,295 +30,118 @@ bool Block::init()
         // エラー
         return false;
     }
-    int i;//ループカウンタ
-    int j;
-    for( i = 0; i < 22; i++ )
-        for( j = 0; j < 12; j++ )//壁以外
-        {
-            block[ i ][ j ] =0;
-            field[ i ][ j ] = 0;
+	int i, j, k;
+	for(i=0;i<4;i++)
+		for (j = 0; j < 4; j++)
+		{
+			falling_block[i][j].index[0] =-1000;
+			falling_block[i][j].index[1] = -1000;
+			falling_block[i][j].color = -1000;
+			falling_block[i][j].is_wall = false;
+		}
+	for (i = 0; i < 22; i++) {
+		for (j = 0; j < 12; j++)
+		{
+			field[i][j].color =-1;//色情報初期化
+			for (k = 0; k < 2; k++) 
+			{
+				field[i][j].index[k] = 99;
+			}
+			if (i == 21 || j == 0 || j == 11)//壁
+			{
+				field[i][j].is_wall = true;
+				field[i][j].index[0] = j;//左右当たり判定番号
+				field[i][j].index[1] = i;//下当たり判定配列番号
+				field[i][j].color = Orange;
+			}
+			else//壁以外
+			{
+				field[i][j].is_wall = false;
+			}
+		
 
-            if( i == 21 )//壁
-            {
-                block[ i ][ j ] = WALL;
-                field[ i ][ j ] = WALL;
-          }
-            if( j == 0 || j == 11 )//壁
-            {
-                block[ i ][ j ] =WALL;//現在動いてるブロック
-                field[ i ][ j ] = WALL;//固定されているブロック
-            }
+		}
+	}
 
-
-            
-        }
-    
-    
     return true;
     
 }
-
-
-//更新
-//自動落下処理
-//キーで動く処理
+//更新処理
 void Block::update()
 {
-    Keyboard::State key = Key::getKeyState();
-    GamePad::State pad = Pad::getState();
-    //自動落下
-    if( ++cauto > 60 )
-    {
-        key_state = None;
-        position_.y += plus;//一つ移動
-        cauto = 0;//カウンタ初期化
-        Check();//確認
-    }
-    if( ++count >= 5 )
-    {
-        if( key.Right )//右
-        {
-            key_state = Right;
-            Animation();
-            Check();
-        }
-        else if( key.Left )
-        {
-            key_state = Left;
-            Animation();
-            Check();
-        }
-        else if( key.Down )
-        {
-            key_state = Down;
-            Animation();
-            Check();
-        }
+	Keyboard::State key = Key::getKeyState();
+	GamePad::State pad = Pad::getState();
+	int i, j;
+	if (exist_fallingblock == false) {
+		falling_block[0][0].index[0] = 1;
+		falling_block[0][0].index[1] = 0;
+		falling_block[0][0].color = Lightblue;
+		exist_fallingblock = true;
+	}
 
-        else if( key.Up )
-        {
-            key_state = Up;
-            Animation();
-            Check();
-        }
-        Check();
-		Collusion();//当たり判定
-        Storing();
-    }
-
+	count++;
+	//自動落下
+	if (count % 60 == 0)
+	{
+		
+		for (i = 0; i < 4; i++) 
+			for (j = 0; j < 4; j++) 
+			{
+				falling_block[i][j].index[1]++;//配列番号(y座標)降下
+			}
+	}
+	
 }
-//アニメーション処理
-
-void Block::Animation()
-{
-    if( Aflag == true )
-    {
-
-        //アニメーション処理
-        if( ++count >= 25 ) {
-            switch( key_state ) {
-            case Left: position_.x -= plus; break;
-            case Right: position_.x += plus; break;
-            case Down: position_.y += plus; break;
-            case Up:position_.y += plus; break;
-
-            }
-            count = 0;
-        }
-    }
-}
-//確認する用の関数(配列)
-void Block::Check()
-{
-    int i2, j2;//一つ先の配列番号を格納する用の変数
-    i2 = 0; j2 = 0;
-    i = (position_.y - 148) / 25;//座標から、一致する入れる番号を求める
-    j = (position_.x - 486) / 25;
-    switch( key_state )
-    {
-    case Down:i2 = i + 1; j2 = j; break;
-    case None:i2 = i+1; j2 = j; break;//自動落下
-    case Left:i2 = i; j2 = j - 1; break;
-    case Right:i2 = i; j2 = j + 1; break;
-    case Up:i2 = i + 1; j2 = j; break;
-   
-    }
-
-    if(field[i2][j2]==99 )//壁だった場合
-    {
-        if( key_state == Left )//一つ右側の座標にする
-        {
-			j2++;
-
-        }
-        if( key_state == Right )//一つ左側の座標にする
-        {
-			j2--;
-        }
-    }
-    if( field[ i2 ][ j2 ] == 1)//一つ先の配列が、ブロックだった場合
-    {
-        flag = true;//配列に格納
-        Aflag = false;//アニメ-ションを行わない
-    }
-    else{
-        Aflag = true;
-		}
-
-
-
-}
-
-//当たり判定
-void Block::Collusion()
-{
-    //当たり判定
-    if( position_.x <= 486 )//右脇
-    {
-        position_.x += plus;
-    }
-    if( position_.x >= 756 )//左脇
-    {
-        position_.x -= plus;
-    }
-    if( position_.y >= 670 )//下
-    {
-        position_.y = 672;
-		flag = true;
-    }
-
-}
-
-
-
 
 //描画
 void Block::draw()
 {
-    RECT rect;//ブロックの描画
-    rect.top = 956L;
-    rect.left = 688L;
-    rect.right = rect.left + 25L;
-    rect.bottom = rect.top + 25L;
 
+	int i, j;
+	//壁描画
+	for (i = 0; i < 22; i++) {
+		for (j = 0; j < 12; j++) {
+			Vector2 texture_UV = get_textureUV_from(field[i][j].color);
+			RECT rect;
+			rect.top = texture_UV.x;
+			rect.left = texture_UV.y;
+			rect.right = rect.left + 25L;
+			rect.bottom = rect.top + 25L;
 
- Sprite::draw( texture_, position_, &rect );
- RECT Arect;//ブロックの描画//壁描画
- Arect.top = 957L;
- Arect.left = 713L;
- Arect.right = Arect.left + 25L;
- Arect.bottom = Arect.top + 25L;
+			position_.x = (field[i][j].index[0] * 25) + 487;
+			position_.y = (field[i][j].index[1] * 25) + 173;
 
- int i, j;
- for( i = 0; i < 22; i++ ) {
-     for( j = 0; j < 12; j++ )
-     {
-        if( block[ i ][ j ] == WALL )//当たり判定の壁の表示
-         {
-             Aposition_.x = (j* 25) + 487;
-             Aposition_.y = (i * 25) + 173;
-             Sprite::draw( texture_, Aposition_, &Arect );
-         }
-         if( field[ i ][ j ] == 1 )//ブロックの表示
-         {
-             position2.x= (j* 25) + 487;
-             position2.y = (i* 25) + 173;
-             Sprite::draw( texture_, position2, &rect );
-         }
-
-     }
- }
- 
-
-}
-
-//破棄
-void Block::destroy()
-{
-    SAFE_RELEASE( texture_ );
-}
-
-
-//配列に格納
-void Block::Storing()
-{
-    int i, j;
-    int count;//iのカウント用変数
-    if( flag == true )
-    {
-        i= (position_.y-148) / 25;//座標から、一致する入れる番号を求める
-        j= (position_.x-486) / 25;
-        field[ i ][ j ] = 1;//ブロックの中身を入れる
-        
-        count = i;
-        for( j = 1; j < 11; j++ )//ブロックが入った配列の要素を左から確認
-        {
-          
-            if( field[count][ j ] == 1 )//ブロックの中身が１ならdeletecountインクリメント
-            {
-                cdelete++;
-            }
-            else//ブロックが入っていない場合は、deletecountの初期化を行
-                cdelete = 0;
-                
-        }
-
-       
-
-
-		Delete(count);//消す処理
-        position_.y = 173L;//ブロック座標
-        position_.x = 511L;
-      
-
-    }
-
-     flag = false;
-}
-
-//削除処理
-void Block::Delete(int count)
-{
-
-    
-    int k;
-	if (cdelete>=10)//カウントが10以上なら
-	{
-		cdelete = 0;//カウントの初期化
-		for (k = 1; k < 11; k++)
-		{
-			if (field[count][k] == 1)//ブロックの中身の初期化
-			{
-				field[count][k] = 0;
-			}
+			Sprite::draw(texture_, position_, &rect);
 		}
-        Drop(count);
 	}
 
+	RECT Arect;
+	for (i = 0; i < 4; i++)
+		for (j = 0; j < 4; j++)
+		{
+			Vector2 texture_UV = get_textureUV_from(falling_block[i][j].color);
+			Arect.top = texture_UV.x;
+			Arect.left = texture_UV.y;
+			Arect.right = Arect.left + 25L;
+			Arect.bottom = Arect.top + 25L;
+
+			position2.x = (falling_block[i][j].index[0] * 25) + 487;
+			position2.y = (falling_block[i][j].index[1] * 25) + 173;
+			
+			Sprite::draw(texture_, position2, &Arect);
+		}
+
+		
 }
-//消された場合、積んであるブロックを下に落とす処理
-void Block::Drop(int count)
-{
-    for( i = count; i >0; i-- )
-        for( j = 1; j < 11; j++ )
-        {
-            if( field[ i ][ j ] == 1 ) {
-                field[ i + 1 ][ j ] = field[ i ][ j ];
-                field[ i ][ j ] =field[ i - 1 ][ j ];
-            }
-    }
-}
+
 
 //落ちれるかどうか
 bool Block::can_fall()
 {
-	if (field[i + 1][j] == 99 || field[i + 1][j] == 1)
-	{
-		return false;
-	}
-	else {
-		return true;
-		field[i][j] == 1;
-
-	}
+	return true;
+}
+//破棄
+void Block::destroy()
+{
+    SAFE_RELEASE( texture_ );
 }

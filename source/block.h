@@ -6,6 +6,13 @@
 using namespace DirectX;
 using namespace SimpleMath;
 
+//構造体
+typedef struct
+{
+	int index[2];//配列番号
+	int color;//色情報
+	bool is_wall;//壁かどうか
+}block;
 
 class Block
 {
@@ -13,24 +20,14 @@ private:
 
     ID3D11ShaderResourceView* texture_;//テクスチャ
     Vector2 position_;//ブロック描画座標
-    float plus;         //移動量
-    bool move_;//動けるかどうかを見るフラグ
     int key_state;//何のキーを押したかを格納
-    int Animation_counter;//アニメーションカウンタ
-    int kAnimationSpeed;
-    int count;
-    int block[ 22 ][ 12 ];//現在フィールド
-    int field[ 22 ][ 12 ];//固定フィールド
-    bool flag;
+	int count;
+	block falling_block[4][4];//今落ちているブロック
+    block field[ 22 ][ 12 ];//固定フィールド
     Vector2 position2;
-    bool r_flag;//リセットフラグ
     Vector2 sposition_;//初期ポジション
     Vector2 Aposition_;
-    int i;
-    int j;//ポジションから配列番号を求める時の格納変数
-    int cdelete;
-    bool Aflag;//アニメーションフラグ
-    int cauto;//自動落下用カウンタ
+	bool exist_fallingblock;
     
 public:
     Block();   //コンストラクタ
@@ -38,11 +35,8 @@ public:
     void update();  //更新
     void draw();    //描画    
     void destroy(); //破棄
-    void Animation();//アニメーション処理
-    void Collusion();//当たり判定
-    void Storing();//配列に格納
-    void Delete(int count);//消す
-    void Check();//チェックする
-    void Drop(int count);//積んであるブロックを下に落とす
 	bool can_fall();//落ちれるかどうか
+	
+
+
 };

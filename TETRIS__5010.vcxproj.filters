@@ -75,6 +75,9 @@
     <ClCompile Include="source\button.cpp">
       <Filter>ソース ファイル\game</Filter>
     </ClCompile>
+    <ClCompile Include="source\color.cpp">
+      <Filter>ソース ファイル\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -125,10 +128,13 @@
     <ClInclude Include="source\font.h">
       <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
+    <ClInclude Include="source\button.h">
+      <Filter>ヘッダー ファイル\game</Filter>
+    </ClInclude>
     <ClInclude Include="source\block.h">
       <Filter>ヘッダー ファイル\game</Filter>
     </ClInclude>
-    <ClInclude Include="source\button.h">
+    <ClInclude Include="source\color.h">
       <Filter>ヘッダー ファイル\game</Filter>
     </ClInclude>
   </ItemGroup>
