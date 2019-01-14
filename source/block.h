@@ -28,6 +28,7 @@ private:
     Vector2 sposition_;//初期ポジション
     Vector2 Aposition_;
 	bool exist_fallingblock;
+	
     
 public:
     Block();   //コンストラクタ
@@ -35,7 +36,7 @@ public:
     void update();  //更新
     void draw();    //描画    
     void destroy(); //破棄
-	bool can_fall();//落ちれるかどうか
+	bool can_move(int direction);//落ちれるかどうか
 	
 
 

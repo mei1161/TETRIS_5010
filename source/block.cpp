@@ -69,6 +69,7 @@ bool Block::init()
 //更新処理
 void Block::update()
 {
+	
 	Keyboard::State key = Key::getKeyState();
 	GamePad::State pad = Pad::getState();
 	int i, j;
@@ -81,7 +82,19 @@ void Block::update()
 
 	count++;
 	//自動落下
-	if (count % 60 == 0)
+
+	if (key.Down) 
+	{
+		if (count % 30 == 0)
+		{
+			for (i = 0; i < 4; i++)
+				for (j = 0; j < 4; j++)
+				{
+					falling_block[i][j].index[1]++;//配列番号(y座標)降下
+				}
+		}
+	}
+	else 	if (count % 60 == 0)
 	{
 		
 		for (i = 0; i < 4; i++) 
@@ -89,7 +102,31 @@ void Block::update()
 			{
 				falling_block[i][j].index[1]++;//配列番号(y座標)降下
 			}
+	}	
+
+	if (key.Left)
+	{
+		if (count % 6 == 0) {
+			for (i = 0; i < 4; i++)
+				for (j = 0; j < 4; j++)
+				{
+					falling_block[i][j].index[0]--;//左
+				}
+		}
 	}
+	 if (key.Right)
+	{
+		if (count % 6 == 0) {
+			for (i = 0; i < 4; i++)
+				for (j = 0; j < 4; j++)
+				{
+					falling_block[i][j].index[0]++;//右
+				}
+		}
+	}
+	 
+	
+
 	
 }
 
@@ -98,7 +135,7 @@ void Block::draw()
 {
 
 	int i, j;
-	//壁描画
+	//壁描画//固まったブロックの描画
 	for (i = 0; i < 22; i++) {
 		for (j = 0; j < 12; j++) {
 			Vector2 texture_UV = get_textureUV_from(field[i][j].color);
@@ -114,7 +151,7 @@ void Block::draw()
 			Sprite::draw(texture_, position_, &rect);
 		}
 	}
-
+	//動いてるブロック描画
 	RECT Arect;
 	for (i = 0; i < 4; i++)
 		for (j = 0; j < 4; j++)
@@ -135,9 +172,13 @@ void Block::draw()
 }
 
 
-//落ちれるかどうか
-bool Block::can_fall()
+//動けるかどうか
+bool Block::can_move(int direction)
 {
+	switch (direction)
+	{
+	case Left:
+	}
 	return true;
 }
 //破棄
