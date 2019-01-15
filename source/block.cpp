@@ -19,7 +19,7 @@ Block::Block()
     position_.x =511L;
 	count = 0;//カウント
 	exist_fallingblock = false;//ブロック生成
-    copy_fallingblock = false;//ブロックコピー
+  
 }
 
 //初期化
@@ -33,7 +33,7 @@ bool Block::init()
     }
 	int i, j, k;
 	for(i=0;i<4;i++)
-		for (j = 0; j < 4; j++)
+		for (j = 0; j < 4; j++)//落ちているブロックの初期化
 		{
 			falling_block[i][j].index[0] =-1000;
 			falling_block[i][j].index[1] = -1000;
@@ -45,7 +45,7 @@ bool Block::init()
 		for (j = 0; j < 12; j++)
 		{
 			field[i][j].color =-1;//色情報初期化
-			for (k = 0; k < 2; k++) 
+			for (k = 0; k < 2; k++) //座標初期化
 			{
 				field[i][j].index[k] = 99;
 			}
@@ -86,7 +86,7 @@ void Block::update()
 
 	if (key.Down) 
 	{
-		if (count % 30 == 0)
+		if (count % 20 == 0)
 		{
 			for (i = 0; i < 4; i++)
 				for (j = 0; j < 4; j++)
@@ -210,7 +210,7 @@ bool Block::can_move(int direction)
         for( i = 0; i < 4; i++ ) 
             for( j = 0; j < 4; j++ )
             {//落ちているブロックの中身が入っている場合、配列番号を代入
-                if( falling_block[ i ][ j ].index[ 0 ] >= -1 && falling_block[ i ][ j ].index[ 1 ] >= -1 )
+                if( falling_block[ i ][ j ].index[ 0 ] >= -1 && falling_block[ i ][ j ].index[ 0 ] >= -1 )
                 {
                     checkx = falling_block[ i ][ j ].index[ 0 ];
                     checky = falling_block[ i ][ j ].index[ 1 ];
@@ -218,7 +218,7 @@ bool Block::can_move(int direction)
 
                 if( field[ checky + 1 ][ checkx ].index[1]==21||field[checky + 1 ][checkx ].index[0]==1)//1つ下の配列
                 {    
-                    copy_fallingblock = true;
+                   
                     Copy_fallingblock_in_field();
                    
                     return false;
@@ -259,17 +259,44 @@ bool Block::can_move(int direction)
 void Block::Copy_fallingblock_in_field()
 {
     int i, j;
-    if( copy_fallingblock == true )
-    {
         for(i=0;i<4;i++)
             for( j = 0; j < 4; j++ )
             {
-                if( falling_block[ i ][ j ].index[ 0 ] >= -1 && falling_block[ i ][ j ].index[ 1 ] >= -1 ) {
-                    field[ falling_block[ i ][ j ].index[ 1 ] ][ falling_block[ i ][ j ].index[ 0 ] ] = falling_block[ i ][ j ];
+                if( falling_block[ i ][ j ].index[ 0 ] >= -1 && falling_block[ i ][ j ].index[ 1 ] >= -1 ) 
+                {
+                    Delete_fieldblock( falling_block[ i ][ j ].index[ 1 ] );
+                    field[ falling_block[ i ][ j ].index[ 1]][ falling_block[ i ][ j ].index[0] ] = falling_block[ i ][ j ];
+                    
                 }
-            }
         exist_fallingblock = false;//新しいブロック生成
     }
+}
+//そろったブロックを消す処理
+void Block::Delete_fieldblock(int num)
+{
+    int  j;
+    int delete_count=0;
+    for( j = 1; j < 11; j++ )
+    {
+        if( field[ num ][ j ].index[ 0 ] != 99 )
+        {
+            ++delete_count;
+        }
+        else
+            delete_count = 0;
+        if( delete_count>=10 )
+        {
+            for( j = 1; j < 11; j++ )
+            {
+                if( field[ num ][ j ].index[0]!= 99 )
+                {
+                    field[ num ][ j ].index[ 0 ] = 99;
+                    field[ num ][ j ].index[ 1 ] = 99;
+                }
+            }
+            delete_count = 0;
+        }
+   }
 
 }
 //破棄
