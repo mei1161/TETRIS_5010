@@ -17,8 +17,9 @@ Block::Block()
     texture_ = NULL;
     position_.y =173L;//ブロック座標
     position_.x =511L;
-	count = 0;
-	exist_fallingblock = false;
+	count = 0;//カウント
+	exist_fallingblock = false;//ブロック生成
+    copy_fallingblock = false;//ブロックコピー
 }
 
 //初期化
@@ -76,7 +77,7 @@ void Block::update()
 	if (exist_fallingblock == false) {
 		falling_block[0][0].index[0] =1;//faling_blockのX座標
 		falling_block[0][0].index[1] =0;//falling_block のY座標
-		falling_block[0][0].color = Lightblue;
+		falling_block[0][0].color = Green;
 		exist_fallingblock = true;
 	}
 
@@ -215,14 +216,19 @@ bool Block::can_move(int direction)
                     checky = falling_block[ i ][ j ].index[ 1 ];
                 }
 
-                if( field[ checky + 1 ][ checkx ].is_wall == true )//一つ下の配列に壁があるかどうか
-                {
+                if( field[ checky + 1 ][ checkx ].index[1]==21||field[checky + 1 ][checkx ].index[0]==1)//1つ下の配列
+                {    
+                    copy_fallingblock = true;
+                    Copy_fallingblock_in_field();
+                   
                     return false;
                     
                 }
                 else
-                {
+                { 
+                   
                     return true;
+                   
                 }
             }
         break;
@@ -237,6 +243,7 @@ bool Block::can_move(int direction)
 
             if( field[ checky][ checkx+1 ].is_wall == true )//一つ下の配列に壁があるかどうか
             {
+              
                 return false;
             }
             else
@@ -248,6 +255,23 @@ bool Block::can_move(int direction)
         }
     
     }
+//落ちているブロックをフィールドの中に移す
+void Block::Copy_fallingblock_in_field()
+{
+    int i, j;
+    if( copy_fallingblock == true )
+    {
+        for(i=0;i<4;i++)
+            for( j = 0; j < 4; j++ )
+            {
+                if( falling_block[ i ][ j ].index[ 0 ] >= -1 && falling_block[ i ][ j ].index[ 1 ] >= -1 ) {
+                    field[ falling_block[ i ][ j ].index[ 1 ] ][ falling_block[ i ][ j ].index[ 0 ] ] = falling_block[ i ][ j ];
+                }
+            }
+        exist_fallingblock = false;//新しいブロック生成
+    }
+
+}
 //破棄
 void Block::destroy()
 {
