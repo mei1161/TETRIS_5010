@@ -1,6 +1,7 @@
 #include"block.h"
 #include"color.h"
 #include"color.cpp"
+#include"mino_base.h"
 enum keyboard
 {
     Left,
@@ -86,29 +87,14 @@ void Block::update()
 
 	if (key.Down) 
 	{
-		if (count % 20 == 0)
+		if (count % 3== 0)
 		{
-			for (i = 0; i < 4; i++)
-				for (j = 0; j < 4; j++)
-				{
-                    if( can_move( Down ) == true )
-                    {
-                        falling_block[ i ][ j ].index[ 1 ]++;//配列番号(y座標)降下
-                    }
-				}
+			move_down();
 		}
 	}
 	else 	if (count % 60 == 0)
 	{
-		
-		for (i = 0; i < 4; i++) 
-			for (j = 0; j < 4; j++) 
-			{
-                if( can_move( Down ) == true )
-                {
-                    falling_block[ i ][ j ].index[ 1 ]++;//配列番号(y座標)降下
-                }
-			}
+		move_down();
 	}	
 
 	if (key.Left)
@@ -138,6 +124,24 @@ void Block::update()
 				}
 		}
 	}
+}
+void Block::move_down()
+{
+	int i, j;
+			if (can_move(Down)== true)//動けるなら
+			{
+				for(i=0;i<4;i++)
+					for (j = 0; j < 4; j++)
+					{
+						falling_block[i][j].index[1]++;//配列番号(y座標)降下
+
+					}
+				if (can_move(Down) == false)
+				{
+					Copy_fallingblock_in_field();
+				}
+			}
+			
 }
 
 //描画
@@ -216,25 +220,22 @@ bool Block::can_move(int direction)
                     checky = falling_block[ i ][ j ].index[ 1 ];
                 }
 
-                if( field[ checky + 1 ][ checkx ].index[1]==21||field[checky + 1 ][checkx ].index[0]==1)//1つ下の配列
+                if( field[ checky + 1 ][ checkx ].index[1]==21||field[checky + 1 ][checkx].index[1]!=99)//1つ下の配列
                 {    
-                   
-                    Copy_fallingblock_in_field();
-                   
                     return false;
                     
                 }
                 else
                 { 
-                   
                     return true;
-                   
                 }
             }
         break;
-    case Right:        for( i = 0; i < 4; i++ )
+    case Right:
+		for( i = 0; i < 4; i++ )
         for( j = 0; j < 4; j++ )
-        {//落ちているブロックの中身が入っている場合、配列番号を代入
+        {
+			//落ちているブロックの中身が入っている場合、配列番号を代入
             if( falling_block[ i ][ j ].index[ 0 ] >= -1 && falling_block[ i ][ j ].index[ 1 ] >= -1 )
             {
                 checkx = falling_block[ i ][ j ].index[ 0 ];
@@ -264,27 +265,29 @@ void Block::Copy_fallingblock_in_field()
             {
                 if( falling_block[ i ][ j ].index[ 0 ] >= -1 && falling_block[ i ][ j ].index[ 1 ] >= -1 ) 
                 {
-                    Delete_fieldblock( falling_block[ i ][ j ].index[ 1 ] );
                     field[ falling_block[ i ][ j ].index[ 1]][ falling_block[ i ][ j ].index[0] ] = falling_block[ i ][ j ];
-                    
+					Delete_fieldblock(falling_block[i][j].index[1]);
                 }
         exist_fallingblock = false;//新しいブロック生成
     }
 }
+
 //そろったブロックを消す処理
 void Block::Delete_fieldblock(int num)
 {
+	
     int  j;
     int delete_count=0;
     for( j = 1; j < 11; j++ )
     {
         if( field[ num ][ j ].index[ 0 ] != 99 )
         {
-            ++delete_count;
+            delete_count++;
         }
         else
             delete_count = 0;
-        if( delete_count>=10 )
+
+        if(delete_count>=10 )
         {
             for( j = 1; j < 11; j++ )
             {

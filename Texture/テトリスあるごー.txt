@@ -12,3 +12,6 @@ https://nompor.com/2018/10/21/post-4716/
 
 コンソールテトリス
 https://petitetech.com/c_block_puzzle/c_block_puzzle2.html
+
+参考サイト
+https://openbook4.me/projects/56/sections/334

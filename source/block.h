@@ -38,5 +38,5 @@ public:
 	bool can_move(int direction);//落ちれるかどうか
     void Copy_fallingblock_in_field();//fallingblockをフィールドにコピーする
     void Delete_fieldblock(int num);//フィールドのそろったブロックを消す処理
-
+	void move_down();//下の場合の処理(自動落下も含む）
 };

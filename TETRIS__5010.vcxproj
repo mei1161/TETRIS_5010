@@ -175,6 +175,7 @@
     <ClInclude Include="source\font.h" />
     <ClInclude Include="source\game.h" />
     <ClInclude Include="source\keyboard.h" />
+    <ClInclude Include="source\mino_base.h" />
     <ClInclude Include="source\pad.h" />
     <ClInclude Include="source\player.h" />
     <ClInclude Include="source\release.h" />
