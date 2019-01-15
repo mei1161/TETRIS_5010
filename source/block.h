@@ -19,14 +19,13 @@ class Block
 private:
 
     ID3D11ShaderResourceView* texture_;//テクスチャ
-    Vector2 position_;//ブロック描画座標
+   
     int key_state;//何のキーを押したかを格納
 	int count;
 	block falling_block[4][4];//今落ちているブロック
     block field[ 22 ][ 12 ];//固定フィールド
-    Vector2 position2;
-    Vector2 sposition_;//初期ポジション
-    Vector2 Aposition_;
+    Vector2 position2; //動いてるブロック描画座標
+    Vector2 position_;//固定ブロック描画座標
 	bool exist_fallingblock;
 	
     

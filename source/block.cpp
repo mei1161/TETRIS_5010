@@ -39,6 +39,7 @@ bool Block::init()
 			falling_block[i][j].color = -1000;
 			falling_block[i][j].is_wall = false;
 		}
+
 	for (i = 0; i < 22; i++) {
 		for (j = 0; j < 12; j++)
 		{
@@ -56,9 +57,8 @@ bool Block::init()
 			}
 			else//壁以外
 			{
-				field[i][j].is_wall = false;
+				field[i][j].is_wall = false;//壁の当たり判定なし
 			}
-		
 
 		}
 	}
@@ -74,8 +74,8 @@ void Block::update()
 	GamePad::State pad = Pad::getState();
 	int i, j;
 	if (exist_fallingblock == false) {
-		falling_block[0][0].index[0] = 1;
-		falling_block[0][0].index[1] = 0;
+		falling_block[0][0].index[0] =1;//faling_blockのX座標
+		falling_block[0][0].index[1] =0;//falling_block のY座標
 		falling_block[0][0].color = Lightblue;
 		exist_fallingblock = true;
 	}
@@ -90,7 +90,10 @@ void Block::update()
 			for (i = 0; i < 4; i++)
 				for (j = 0; j < 4; j++)
 				{
-					falling_block[i][j].index[1]++;//配列番号(y座標)降下
+                    if( can_move( Down ) == true )
+                    {
+                        falling_block[ i ][ j ].index[ 1 ]++;//配列番号(y座標)降下
+                    }
 				}
 		}
 	}
@@ -100,7 +103,10 @@ void Block::update()
 		for (i = 0; i < 4; i++) 
 			for (j = 0; j < 4; j++) 
 			{
-				falling_block[i][j].index[1]++;//配列番号(y座標)降下
+                if( can_move( Down ) == true )
+                {
+                    falling_block[ i ][ j ].index[ 1 ]++;//配列番号(y座標)降下
+                }
 			}
 	}	
 
@@ -110,7 +116,11 @@ void Block::update()
 			for (i = 0; i < 4; i++)
 				for (j = 0; j < 4; j++)
 				{
-					falling_block[i][j].index[0]--;//左
+                    
+                    if( can_move( Left ) == true )
+                    {
+                        falling_block[ i ][ j ].index[ 0 ]--;//左
+                    }
 				}
 		}
 	}
@@ -120,14 +130,13 @@ void Block::update()
 			for (i = 0; i < 4; i++)
 				for (j = 0; j < 4; j++)
 				{
-					falling_block[i][j].index[0]++;//右
+                    if( can_move( Right ) == true )
+                    {
+                        falling_block[ i ][ j ].index[ 0 ]++;//右
+                    }
 				}
 		}
 	}
-	 
-	
-
-	
 }
 
 //描画
@@ -175,12 +184,70 @@ void Block::draw()
 //動けるかどうか
 bool Block::can_move(int direction)
 {
-	switch (direction)
-	{
-	case Left:
-	}
-	return true;
-}
+    int i, j;//ループ変数
+    int checkx,checky;//代入用関数
+    switch( direction )
+    {
+    case Left:
+        for( i = 0; i < 4; i++ ) 
+            for( j = 0; j < 4; j++ )
+            {
+                if( falling_block[ i ][ j ].index[ 0 ] >= -1 && falling_block[ i ][ j ].index[ 1 ] >= -1 )
+                {
+                    checkx = falling_block[ i ][ j ].index[ 0 ];
+                    checky = falling_block[ i ][ j ].index[ 1 ];
+                }
+
+                if( field[ checky ][ checkx - 1 ].is_wall == true )
+                {
+                    return false;
+                }
+                else return true;
+            }
+                break;
+    case Down:
+        for( i = 0; i < 4; i++ ) 
+            for( j = 0; j < 4; j++ )
+            {//落ちているブロックの中身が入っている場合、配列番号を代入
+                if( falling_block[ i ][ j ].index[ 0 ] >= -1 && falling_block[ i ][ j ].index[ 1 ] >= -1 )
+                {
+                    checkx = falling_block[ i ][ j ].index[ 0 ];
+                    checky = falling_block[ i ][ j ].index[ 1 ];
+                }
+
+                if( field[ checky + 1 ][ checkx ].is_wall == true )//一つ下の配列に壁があるかどうか
+                {
+                    return false;
+                    
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        break;
+    case Right:        for( i = 0; i < 4; i++ )
+        for( j = 0; j < 4; j++ )
+        {//落ちているブロックの中身が入っている場合、配列番号を代入
+            if( falling_block[ i ][ j ].index[ 0 ] >= -1 && falling_block[ i ][ j ].index[ 1 ] >= -1 )
+            {
+                checkx = falling_block[ i ][ j ].index[ 0 ];
+                checky = falling_block[ i ][ j ].index[ 1 ];
+            }
+
+            if( field[ checky][ checkx+1 ].is_wall == true )//一つ下の配列に壁があるかどうか
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+                       break;
+        }
+    
+    }
 //破棄
 void Block::destroy()
 {
