@@ -2,7 +2,7 @@
 #include"keyboard.h"
 #include"texture.h"
 #include"pad.h"
-#include"mino_base.h"
+
 //名前空間
 using namespace DirectX;
 using namespace SimpleMath;
@@ -41,5 +41,6 @@ public:
     void Delete_fieldblock(int num);//フィールドのそろったブロックを消す処理
 	void move_down();//下の場合の処理(自動落下も含む）
     void Drop_fieldblock(int no);//ブロックが消えた後に、残っているブロックを下に落とす処理
+    void Make_fallingblock();//落ちるブロックを作る
 
 };

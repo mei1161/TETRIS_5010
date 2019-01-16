@@ -12,7 +12,8 @@ enum Color
 	Pink,
 	Blue,
 	Brown,
-	Violet
+	Violet,
+    Black
 };
 
 

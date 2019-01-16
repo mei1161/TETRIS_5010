@@ -13,7 +13,7 @@ static Vector2 get_textureUV_from(int color)
 	case Blue:position.y = 788L; break;
 	case Brown:position.y= 813L; break;
 	case Violet:position.y = 838L; break;
-
+    case Black:position.y = 863L; break;
 	}
 	return position;
 }
