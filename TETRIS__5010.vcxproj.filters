@@ -137,8 +137,5 @@
     <ClInclude Include="source\color.h">
       <Filter>ヘッダー ファイル\game</Filter>
     </ClInclude>
-    <ClInclude Include="source\mino_base.h">
-      <Filter>ヘッダー ファイル\game</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>
