@@ -85,7 +85,7 @@ void Block::update()
 	count++;
 	//自動落下
 
-	if (key.Down) 
+	if (key.Down||pad.dpad.down) 
 	{
 		if (count % 3== 0)
 		{
@@ -97,7 +97,7 @@ void Block::update()
 		move_down();
 	}	
 
-	if (key.Left)
+	if (key.Left||pad.dpad.left)
 	{
 		if (count % 6 == 0) {
 			for (i = 0; i < 4; i++)
@@ -111,7 +111,7 @@ void Block::update()
 				}
 		}
 	}
-	 if (key.Right)
+	 if (key.Right||pad.dpad.right)
 	{
 		if (count % 6 == 0) {
 			for (i = 0; i < 4; i++)
@@ -191,7 +191,7 @@ bool Block::can_move(int direction)
 {
     int i, j;//ループ変数
     int checkx,checky;//代入用関数
-    switch( direction )
+    switch( direction )//方向キーの種類によって、分岐
     {
     case Left:
         for( i = 0; i < 4; i++ ) 
@@ -263,10 +263,10 @@ void Block::Copy_fallingblock_in_field()
         for(i=0;i<4;i++)
             for( j = 0; j < 4; j++ )
             {
-                if( falling_block[ i ][ j ].index[ 0 ] >= -1 && falling_block[ i ][ j ].index[ 1 ] >= -1 ) 
+                if( falling_block[ i ][ j ].index[ 0 ] >= -1 && falling_block[ i ][ j ].index[ 1 ] >= -1 ) //初期値が入っていた場合は行わない
                 {
-                    field[ falling_block[ i ][ j ].index[ 1]][ falling_block[ i ][ j ].index[0] ] = falling_block[ i ][ j ];
-					Delete_fieldblock(falling_block[i][j].index[1]);
+                    field[ falling_block[ i ][ j ].index[ 1]][ falling_block[ i ][ j ].index[0] ] = falling_block[ i ][ j ];//faling_blockの中身を代入する
+					Delete_fieldblock(falling_block[i][j].index[1]);//消す処理
                 }
         exist_fallingblock = false;//新しいブロック生成
     }
@@ -277,30 +277,55 @@ void Block::Delete_fieldblock(int num)
 {
 	
     int  j;
-    int delete_count=0;
+    int delete_count=0;//カウンタ
     for( j = 1; j < 11; j++ )
     {
-        if( field[ num ][ j ].index[ 0 ] != 99 )
+        if( field[ num ][ j ].index[ 0 ] != 99 )//indexの中身が初期値以外の値の場合
         {
             delete_count++;
         }
-        else
-            delete_count = 0;
-
-        if(delete_count>=10 )
+        else//初期値が１つでも入っていたら初期化
         {
-            for( j = 1; j < 11; j++ )
+            delete_count = 0;
+        }
+
+        if(delete_count>=10 )//行の中身がすべてブロックの場合
+        {
+            for( j = 1; j < 11; j++ )//そろった行の中身の初期化
             {
                 if( field[ num ][ j ].index[0]!= 99 )
                 {
                     field[ num ][ j ].index[ 0 ] = 99;
                     field[ num ][ j ].index[ 1 ] = 99;
                 }
-            }
-            delete_count = 0;
+            } 
+            delete_count = 0;  
+         Drop_fieldblock( num );
         }
+      
    }
 
+}
+//落ちた時に積まれていたブロックを下に落とす
+void Block::Drop_fieldblock(int no)
+{
+    int i,j;
+    
+    for( i =no-1; i>1; i--) {
+        for( j = 1; j < 11; j++ )
+        {
+            if( field[ i ][ j ].index[1] == 99 )
+            {
+                field[ i ][ j ] = field[ i ][ j ];
+            }
+            else
+            {
+                field[ i ][ j ].index[ 1 ]++;//フィールドのY座標を落とす
+                field[i+1][ j ] = field[ i ][ j ];//１つ下の配列に要素丸ごと落とす
+                field[i][j]=field[i-1][ j ];//上の配列を丸ごと落とす
+            }
+        }
+    }
 }
 //破棄
 void Block::destroy()
