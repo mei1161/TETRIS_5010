@@ -2,6 +2,10 @@
 #include"color.h"
 #include"color.cpp"
 #include"mino.h"
+#include<stdlib.h>
+#include<stdio.h>
+#include<time.h>
+
 enum keyboard
 {
 	Left,
@@ -69,24 +73,82 @@ bool Block::init()
 //ブロック生成
 void Block::Make_fallingblock()
 {
-
+	srand(time(NULL));
 	int i, j;
-	int l = 0;
+	int color;//色
+	int form;//形
+	int mino_type[4][4];
+	color = rand() % 7;
+	form = rand() % 7;
+
+	switch (form)
+	{
+	case 0:for (i = 0; i < 4; i++)
+		for (j = 0; j < 4; j++)
+		{
+			mino_type[i][j] = mino_1[i][j];
+		}break;
+	case 1:for (i = 0; i < 4; i++)
+		for (j = 0; j < 4; j++)
+		{
+			mino_type[i][j] = mino_2[i][j];
+		}break;
+	case 2:for (i = 0; i < 4; i++)
+		for (j = 0; j < 4; j++)
+		{
+			mino_type[i][j] = mino_3[i][j];
+		}break;
+	case 3:for (i = 0; i < 4; i++)
+		for (j = 0; j < 4; j++)
+		{
+			mino_type[i][j] = mino_4[i][j];
+		}break;
+	case 4:for (i = 0; i < 4; i++)
+		for (j = 0; j < 4; j++)
+		{
+			mino_type[i][j] = mino_5[i][j];
+		}break;
+	case 5:for (i = 0; i < 4; i++)
+		for (j = 0; j < 4; j++)
+		{
+			mino_type[i][j] = mino_6[i][j];
+		}break;
+	case 6:for (i = 0; i < 4; i++)
+		for (j = 0; j < 4; j++)
+		{
+			mino_type[i][j] = mino_7[i][j];
+		}break;
+	}
+
+
 	for (i = 0; i < 4; i++)
 	{
 		for (j = 0; j < 4; j++)
 		{
-			if (mino_1[i][j] == 1)
+			if (mino_type[i][j] == 1)
 			{
 
 				falling_block[i][j].index[0] = j + 1;
 				falling_block[i][j].index[1] = i;
 			}
-			falling_block[i][j].color = Green;
+			falling_block[i][j].color = color;
 
 		}
 	}
 
+
+}
+//落ちるブロックの初期化
+void Block::init_fallingblock()
+{
+	int i, j;
+	for (i = 0; i < 4; i++)
+		for (j = 0; j < 4; j++)
+		{
+			falling_block[i][j].index[0] = -1000;
+			falling_block[i][j].index[1] = -1000;
+
+		}
 
 }
 //更新処理
@@ -96,10 +158,9 @@ void Block::update()
 	Keyboard::State key = Key::getKeyState();
 	GamePad::State pad = Pad::getState();
 	int i, j;
-	if (exist_fallingblock == false) {
-		/*falling_block[0][0].index[0] =1; //faling_blockのX座標
-		falling_block[0][0].index[1] =-1;//falling_block のY座標
-		falling_block[0][0].color = Green;*/
+	if (exist_fallingblock == false)
+	{
+		init_fallingblock();
 		Make_fallingblock();
 		exist_fallingblock = true;
 	}
@@ -219,7 +280,7 @@ void Block::draw()
 bool Block::can_move(int direction)
 {
 	int i, j;//ループ変数
-	int checkx, checky;//代入用関数
+	int checkx = -1000, checky = -1000;//代入用関数
 	switch (direction)//方向キーの種類によって、分岐
 	{
 	case Left:
@@ -230,12 +291,14 @@ bool Block::can_move(int direction)
 				{
 					checkx = falling_block[i][j].index[0];
 					checky = falling_block[i][j].index[1];
+					
+					if (field[checky][checkx - 1].is_wall == true)
+					{
+						return false;
+					}
 				}
 
-				if (field[checky][checkx - 1].is_wall == true)
-				{
-					return false;
-				}
+				
 
 			}
 		return true;
@@ -248,13 +311,12 @@ bool Block::can_move(int direction)
 				{
 					checkx = falling_block[i][j].index[0];
 					checky = falling_block[i][j].index[1];
+					if (field[checky + 1][checkx].index[1] == 21 || field[checky + 1][checkx].index[1] != 99)
+					{
+						return false;
+					}
 				}
 
-				if (field[checky + 1][checkx].index[1] == 21 || field[checky + 1][checkx].index[1] != 99)//1つ下の配列
-				{
-					return false;
-
-				}
 
 			}
 		return true;
@@ -268,13 +330,15 @@ bool Block::can_move(int direction)
 				{
 					checkx = falling_block[i][j].index[0];
 					checky = falling_block[i][j].index[1];
+					
+					if (field[checky][checkx + 1].is_wall == true)//一つ下の配列に壁があるかどうか
+					{
+
+						return false;
+					}
 				}
 
-				if (field[checky][checkx + 1].is_wall == true)//一つ下の配列に壁があるかどうか
-				{
-
-					return false;
-				}
+	
 			}
 		return true;
 		break;

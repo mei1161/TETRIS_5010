@@ -42,5 +42,5 @@ public:
 	void move_down();//下の場合の処理(自動落下も含む）
     void Drop_fieldblock(int no);//ブロックが消えた後に、残っているブロックを下に落とす処理
     void Make_fallingblock();//落ちるブロックを作る
-
+	void init_fallingblock();//落ちるブロックの初期化
 };
