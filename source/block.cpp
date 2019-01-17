@@ -333,14 +333,14 @@ bool Block::can_move( int direction )
             {
                 if( falling_block[ i ][ j ].index[ 0 ] >= -1 && falling_block[ i ][ j ].index[ 1 ] >= -1 )
                 {
-                    checkx = falling_block[ i ][ j ].index[ 0 ];
+                    checkx = falling_block[ i ][ j ].index[ 0 ];//座標番号の受け渡し
                     checky = falling_block[ i ][ j ].index[ 1 ];
-                    if( field[ checky ][ checkx - 1 ].index[ 0 ] != 99 )
+                    if( field[ checky ][ checkx - 1 ].index[ 0 ] != 99 )//ブロックの場合
                     {
                         return false;
                     }
 
-                    if( field[ checky ][ checkx - 1 ].index[ 0 ] == 0 ) 
+                    if( field[ checky ][ checkx - 1 ].index[ 0 ] == 0 ) //壁の場合
                     {
                         return false;
                     }
@@ -361,7 +361,7 @@ bool Block::can_move( int direction )
                     checky = falling_block[ i ][ j ].index[ 1 ];
                     if( field[ checky + 1 ][ checkx ].index[ 1 ] == 21 || field[ checky + 1 ][ checkx ].index[ 1 ] != 99 )
                     {
-                        return false;
+                        return false;//壁または、ブロックの場合
                     }
                 }
 
