@@ -28,7 +28,7 @@ private:
     Vector2 position2; //動いてるブロック描画座標
     Vector2 position_;//固定ブロック描画座標
     bool exist_fallingblock;//ブロック生成用フラグ
-
+   
 
 public:
     Block();   //コンストラクタ
@@ -43,4 +43,6 @@ public:
     void Drop_fieldblock( int no );//ブロックが消えた後に、残っているブロックを下に落とす処理
     void Make_fallingblock();//落ちるブロックを作る
     void init_fallingblock();//落ちるブロックの初期化
+    void  Game_over();//ゲームオーバー
+    bool init_field();
 };

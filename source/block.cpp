@@ -19,6 +19,7 @@ enum keyboard
 //コンストラクタ
 Block::Block()
 {
+
     texture_ = NULL;
     count = 0;//カウント
     exist_fallingblock = false;//ブロック生成
@@ -35,6 +36,7 @@ bool Block::init()
         return false;
     }
     int i, j, k;
+
     for( i = 0; i < 4; i++ )
         for( j = 0; j < 4; j++ )//落ちているブロックの初期化
         {
@@ -67,9 +69,43 @@ bool Block::init()
         }
     }
 
+
+
     return true;
 
 }
+//ゲームオーバー処理
+void Block::Game_over()
+{
+    int j;
+    for( j = 1; j < 11; j++ )
+    {
+        if( field[ 1 ][ 3 ].index[ 1 ] != 99 || field[ 1 ][ 4 ].index[ 1 ] != 99 || field[ 1 ][ 5 ].index[ 0 ] != 99 || field[ 1 ][ 6 ].index[ 1 ] != 99 )
+        {
+            init_field();
+        }
+    }
+
+
+}
+//壁以外の初期化
+bool Block::init_field()
+{
+    int i, j, k;
+
+    for( i = 0; i < 21; i++ )
+        for( j = 1; j < 11; j++ )
+        {
+            field[ i ][ j ].color = -1;  //色情報初期化
+            for( k = 0; k < 2; k++ ) //座標初期化
+            {
+                field[ i ][ j ].index[ k ] = 99;
+            }
+        }
+    return true;
+
+}
+
 //ブロック生成
 void Block::Make_fallingblock()
 {
@@ -80,7 +116,6 @@ void Block::Make_fallingblock()
     int mino_type[ 4 ][ 4 ];
     color = rand() % 7;
     form = rand() % 7;
-
     switch( form )
     {
     case 0:for( i = 0; i < 4; i++ )
@@ -158,19 +193,23 @@ void Block::update()
     Keyboard::State key = Key::getKeyState();
     GamePad::State pad = Pad::getState();
     int i, j;
+
     if( exist_fallingblock == false )//ブロック生成
     {
+        Game_over();
         init_fallingblock();
         Make_fallingblock();
         exist_fallingblock = true;
     }
 
-    count++;
+
     //自動落下
+    count++;
+
 
     if( key.Down || pad.dpad.down )
     {
-        if( count % 3 == 0 )//下の入力がある場合
+        if( count % 6 == 0 )//下の入力がある場合
         {
             move_down();
         }
@@ -205,12 +244,17 @@ void Block::update()
                     {
                         falling_block[ i ][ j ].index[ 0 ]++;//右
                     }
+                if( can_move( Down ) == false )
+                {
+                    Copy_fallingblock_in_field();
+                }
 
             }
 
         }
     }
 }
+//下に落ちる処理
 void Block::move_down()
 {
     int i, j;
@@ -225,7 +269,9 @@ void Block::move_down()
         if( can_move( Down ) == false )
         {
             Copy_fallingblock_in_field();
+
         }
+       
     }
 
 }
@@ -290,7 +336,7 @@ bool Block::can_move( int direction )
                     checkx = falling_block[ i ][ j ].index[ 0 ];
                     checky = falling_block[ i ][ j ].index[ 1 ];
 
-                    if( field[ checky ][ checkx - 1 ].is_wall == true || field[ checky ][ checkx - 1 ].index[ 0 ] != 99 )
+                    if( field[ checky ][ checkx - 1 ].index[ 0 ] == 0 || field[ checky ][ checkx - 1 ].index[ 0 ] != 99 )
                     {
                         return false;
                     }
@@ -329,7 +375,7 @@ bool Block::can_move( int direction )
                     checkx = falling_block[ i ][ j ].index[ 0 ];
                     checky = falling_block[ i ][ j ].index[ 1 ];
 
-                    if( field[ checky ][ checkx + 1 ].is_wall == true || field[ checky ][ checkx + 1 ].index[ 0 ] != 99 )//一つ下の配列に壁があるかどうか
+                    if( field[ checky ][ checkx + 1 ].index[ 0 ] == 11 || field[ checky ][ checkx + 1 ].index[ 0 ] != 99 )//一つ下の配列に壁があるかどうか
                     {
 
                         return false;
@@ -352,10 +398,10 @@ void Block::Copy_fallingblock_in_field()
         {
             if( falling_block[ i ][ j ].index[ 0 ] >= -1 && falling_block[ i ][ j ].index[ 1 ] >= -1 ) //初期値が入っていた場合は行わない
             {
-
                 field[ falling_block[ i ][ j ].index[ 1 ] ][ falling_block[ i ][ j ].index[ 0 ] ] = falling_block[ i ][ j ];//faling_blockの中身を代入する
                 Delete_fieldblock( falling_block[ i ][ j ].index[ 1 ] );//消す処理
             }
+
             exist_fallingblock = false;//新しいブロック生成
         }
 }
@@ -415,8 +461,11 @@ void Block::Drop_fieldblock( int no )
         }
     }
 }
+
 //破棄
 void Block::destroy()
 {
     SAFE_RELEASE( texture_ );
+
+
 }
