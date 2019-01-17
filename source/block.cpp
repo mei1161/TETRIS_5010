@@ -209,7 +209,7 @@ void Block::update()
 
     if( key.Down || pad.dpad.down )
     {
-        if( count % 6 == 0 )//‰º‚Ì“ü—Í‚ª‚ ‚éê‡
+        if( count % 3 == 0 )//‰º‚Ì“ü—Í‚ª‚ ‚éê‡
         {
             move_down();
         }
@@ -335,8 +335,12 @@ bool Block::can_move( int direction )
                 {
                     checkx = falling_block[ i ][ j ].index[ 0 ];
                     checky = falling_block[ i ][ j ].index[ 1 ];
+                    if( field[ checky ][ checkx - 1 ].index[ 0 ] != 99 )
+                    {
+                        return false;
+                    }
 
-                    if( field[ checky ][ checkx - 1 ].index[ 0 ] == 0 || field[ checky ][ checkx - 1 ].index[ 0 ] != 99 )
+                    if( field[ checky ][ checkx - 1 ].index[ 0 ] == 0 ) 
                     {
                         return false;
                     }
