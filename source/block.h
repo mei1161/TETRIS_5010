@@ -28,7 +28,8 @@ private:
     Vector2 position2; //動いてるブロック描画座標
     Vector2 position_;//固定ブロック描画座標
     bool exist_fallingblock;//ブロック生成用フラグ
-   
+    int old_color;//1つ前に表示したいろ
+    int old_form;//1つ前に表示した形
 
 public:
     Block();   //コンストラクタ
@@ -44,5 +45,6 @@ public:
     void Make_fallingblock();//落ちるブロックを作る
     void init_fallingblock();//落ちるブロックの初期化
     void  Game_over();//ゲームオーバー
-    bool init_field();
+    bool init_field();//壁以外の初期化
+    bool can_rotate(int num);
 };
