@@ -135,7 +135,7 @@ void Block::Make_fallingblock()
     for( i = 0; i < 4; i++ )
         for( j = 0; j < 4; j++ )
         {
-            mino_type[ i ][ j ] = minos[ form ][ 0 ][ i ][ j ];//ミノ形のコピー
+            mino_type[ i ][ j ] = minos[form][ 0 ][ i ][ j ];//ミノ形のコピー
         }
 
 
@@ -473,7 +473,7 @@ void Block::Drop_fieldblock( int no )
         {
             if( field[ i ][ j ].index[ 1 ] == 99 )
             {
-                field[ i ][ j ] = field[ i ][ j ];
+                field[ i ][ j ] = field[ i-1 ][ j ];
             }
             else
             {
