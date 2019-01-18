@@ -434,7 +434,7 @@ void Block::Delete_fieldblock( int num )
 
     int  j;
     int delete_count = 0;//カウンタ
-    
+    int count;
     for( j = 1; j < 11; j++ )
     {
         if( field[ num ][ j ].index[ 0 ] != 99 )//indexの中身が初期値以外の値の場合

@@ -46,5 +46,5 @@ public:
     void init_fallingblock();//落ちるブロックの初期化
     void  Game_over();//ゲームオーバー
     bool init_field();//壁以外の初期化
-    bool can_rotate(int num);
+    bool can_rotate(int num);//回転できるか
 };
