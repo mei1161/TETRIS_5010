@@ -37,7 +37,7 @@ bool Block::init()
 		// エラー
 		return false;
 	}
-	int i, j, k;
+	int i, j;
 
 	for (i = 0; i < 4; i++)
 		for (j = 0; j < 4; j++)//落ちているブロックの初期化
@@ -175,6 +175,8 @@ void Block::update()
 	//各インターフェースの情報取得
 	Keyboard::State key = Key::getKeyState();
 	GamePad::State pad = Pad::getState();
+	tracker.Update(key);
+
 	int i, j;
 
 	if (exist_fallingblock == false)//ブロック生成
@@ -236,23 +238,23 @@ void Block::update()
 	}
 
 
-	if (key.Up || pad.dpad.up)
+	if (tracker.pressed.Up || pad.dpad.up)
 	{
-		if (count % 6 == 0)
-		{
+		
+		
 			while (move_down() == true);
-		}
+		
 	}
 
 
-	if (key.A || pad.buttons.a)
+	if (tracker.pressed.A|| pad.buttons.a)
 	{
-		Rotate(old_form);
+		Rotate(A,old_form);
 	}
-	/*if (key.B || pad.dpad.buttons.b)
+	if (tracker.pressed.Z|| pad.buttons.b)
 	{
-		;
-	}*/
+		Rotate(B,old_form);
+	}
 
 
 
@@ -279,13 +281,15 @@ bool Block::move_down()
 }
 
 //回転処理
-bool Block::Rotate(int no)
+bool Block::Rotate(int pattern,int form)
 {
 	int i, j;
 	block copy_block[4][4] = { -1000 };//コピー配列
 	int p, q;
 
-	for (i = 0; i < 4; i++)
+	switch (pattern)
+	{
+	case A:	for (i = 0; i < 4; i++)
 		for (j = 0; j < 4; j++)
 		{
 			p = falling_block[1][1].index[0];
@@ -296,14 +300,24 @@ bool Block::Rotate(int no)
 		}
 
 
-	for (i = 0; i < 4; i++)
+			for (i = 0; i < 4; i++)
+				for (j = 0; j < 4; j++)
+				{
+					falling_block[i][j].index[0] = copy_block[i][j].index[0];
+					falling_block[i][j].index[1] = copy_block[i][j].index[1];
+				}return true;
+
+	case B:for(i=0;i<4;i++)
 		for (j = 0; j < 4; j++)
 		{
-			falling_block[i][j].index[0] = copy_block[i][j].index[0];
-			falling_block[i][j].index[1] = copy_block[i][j].index[1];
+			p = falling_block[1][1].index[0];
+			q = falling_block[1][1].index[1];
+			copy_block[i][j] = falling_block[i][j];
 		}
+	}
 
-	return true;
+
+	
 }
 
 //描画
@@ -434,14 +448,14 @@ bool Block::can_move(int direction)
 void Block::Copy_fallingblock_in_field()
 {
 	int i, j;
-	int max_y =-100;
+	int max_y = -100;
 	for (i = 0; i < 4; i++)
 		for (j = 0; j < 4; j++)
 		{
 			if (falling_block[i][j].is_empty == false) //初期値が入っていた場合は行わない
 			{
 				field[falling_block[i][j].index[1]][falling_block[i][j].index[0]] = falling_block[i][j];//faling_blockの中身を代入する
-				
+
 				if (max_y < falling_block[i][j].index[1])
 				{
 					max_y = falling_block[i][j].index[1];
@@ -496,31 +510,17 @@ void Block::Delete_fieldblock(int num)
 void Block::Drop_fieldblock(int no)
 {
 	int i, j;
-	int count = 0;
-	block tmp = { 0 };
 
 	for (i = no - 1; i > 1; i--) {
 		for (j = 1; j < 11; j++)
 		{
 			if (field[i][j].is_empty == true)//現在見ているブロックが空の場合、以下の処理を実行しない
 			{
-				continue;
+				continue;//処理を飛ばす
 			}
-
-			do {
-				count++;
-
-			} while (field[i + count][j].is_empty == true);//空のブロックの間ループ
-
-
-
-			tmp = field[i][j];//代入用変数に格納
-			field[i][j] = field[i + count - 1][j];//移動できる最大の座標の情報を現在のブロックの情報に上書き
-			field[i + count - 1][j] = tmp;//一番下の座標に、現在のブロックの情報を格納
-			field[i][j].index[1] -= count - 1;
-			field[i + count - 1][j].index[1] += count - 1;//移動したあとに、index[1]に移動した分の座標をプラス
-			tmp = { 0 };//代入用変数初期化
-			count = 0;//カウンタ初期化
+			field[i][j].index[1]++;//Y座標降下
+			field[i + 1][j] = field[i][j];//下の座標に入れ替え
+			field[i][j] = field[i - 1][j];//上の座標といれかえ
 
 		}
 	}

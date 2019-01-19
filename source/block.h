@@ -30,7 +30,7 @@ private:
     bool exist_fallingblock;//ブロック生成用フラグ
     int old_color;//1つ前に表示したいろ
     int old_form;//1つ前に表示した形
-
+	Keyboard::KeyboardStateTracker tracker;
 public:
     Block();   //コンストラクタ
     bool init();    //初期化
@@ -46,5 +46,5 @@ public:
     void init_fallingblock();//落ちるブロックの初期化
     void  Game_over();//ゲームオーバー
     bool init_field();//壁以外の初期化
-	bool Rotate(int no);//回転処理
+	bool Rotate(int pattern,int form);//回転処理
 };
