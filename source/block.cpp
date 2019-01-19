@@ -134,7 +134,7 @@ void Block::Make_fallingblock()
 	for (i = 0; i < 4; i++)
 		for (j = 0; j < 4; j++)
 		{
-			mino_type[i][j] = minos[form][0][i][j];//ミノ形のコピー
+			mino_type[i][j] = minos[5][0][i][j];//ミノ形のコピー
 		}
 
 
@@ -377,10 +377,7 @@ bool Block::can_move(int direction)
 						return false;
 					}
 
-					/*if (field[checky][checkx - 1].index[0] == 0) //壁の場合
-					{
-						return false;
-					}*/
+
 				}
 
 			}
@@ -400,10 +397,7 @@ bool Block::can_move(int direction)
 						return false;
 					}
 
-					/*if (field[checky + 1][checkx].index[1] == 21)
-					{
-						return false;//壁または、ブロックの場合
-					}*/
+
 				}
 			}
 		return true;
@@ -424,11 +418,7 @@ bool Block::can_move(int direction)
 					}
 
 
-					/*if (field[checky][checkx + 1].index[0] == 11)//一つ下の配列に壁があるかどうか
-					{
 
-						return false;
-					}*/
 				}
 
 
@@ -444,17 +434,28 @@ bool Block::can_move(int direction)
 void Block::Copy_fallingblock_in_field()
 {
 	int i, j;
+	int max_y =-100;
 	for (i = 0; i < 4; i++)
 		for (j = 0; j < 4; j++)
 		{
 			if (falling_block[i][j].is_empty == false) //初期値が入っていた場合は行わない
 			{
 				field[falling_block[i][j].index[1]][falling_block[i][j].index[0]] = falling_block[i][j];//faling_blockの中身を代入する
-				Delete_fieldblock(falling_block[i][j].index[1]);//消す処理
+				
+				if (max_y < falling_block[i][j].index[1])
+				{
+					max_y = falling_block[i][j].index[1];
+				}
+
 			}
 
-			exist_fallingblock = false;//新しいブロック生成
+
 		}
+	for (i = max_y - 3; i <= max_y; i++)
+	{
+		Delete_fieldblock(i);//消す処理
+	}
+	exist_fallingblock = false;//新しいブロック生成
 }
 
 //そろったブロックを消す処理
@@ -464,6 +465,7 @@ void Block::Delete_fieldblock(int num)
 	int  j;
 	int delete_count = 0;//カウンタ
 	int count;
+
 	for (j = 1; j < 11; j++)
 	{
 		if (field[num][j].is_empty == false)//indexの中身が初期値以外の値の場合
@@ -479,10 +481,9 @@ void Block::Delete_fieldblock(int num)
 		{
 			for (j = 1; j < 11; j++)//そろった行の中身の初期化
 			{
-				if (field[num][j].is_empty == false)
-				{
-					field[num][j].is_empty = true;
-				}
+
+				field[num][j].is_empty = true;
+
 			}
 			delete_count = 0;
 			Drop_fieldblock(num);
@@ -516,9 +517,11 @@ void Block::Drop_fieldblock(int no)
 			tmp = field[i][j];//代入用変数に格納
 			field[i][j] = field[i + count - 1][j];//移動できる最大の座標の情報を現在のブロックの情報に上書き
 			field[i + count - 1][j] = tmp;//一番下の座標に、現在のブロックの情報を格納
+			field[i][j].index[1] -= count - 1;
 			field[i + count - 1][j].index[1] += count - 1;//移動したあとに、index[1]に移動した分の座標をプラス
 			tmp = { 0 };//代入用変数初期化
 			count = 0;//カウンタ初期化
+
 		}
 	}
 }
