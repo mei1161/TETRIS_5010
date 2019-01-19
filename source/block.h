@@ -12,7 +12,7 @@ typedef struct
 {
     int index[ 2 ];//配列番号//0がX座標・・j、１がY座標・・i
     int color;//色情報
-    bool is_wall;//壁かどうか
+	bool is_empty;//空かどうか
 }block;
 
 class Block
@@ -46,5 +46,5 @@ public:
     void init_fallingblock();//落ちるブロックの初期化
     void  Game_over();//ゲームオーバー
     bool init_field();//壁以外の初期化
-    bool can_rotate(int num);//回転できるか
+	bool Rotate(int no);//回転処理
 };

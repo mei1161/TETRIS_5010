@@ -45,28 +45,26 @@ bool Block::init()
 			falling_block[i][j].index[0] = -1000;
 			falling_block[i][j].index[1] = -1000;
 			falling_block[i][j].color = -1000;
-			falling_block[i][j].is_wall = false;
+
 		}
 
 	for (i = 0; i < 22; i++) {
 		for (j = 0; j < 12; j++)
 		{
 			field[i][j].color = -1;  //色情報初期化
-			for (k = 0; k < 2; k++) //座標初期化
-			{
-				field[i][j].index[k] = 99;
-			}
+
+
 			if (i == 21 || j == 0 || j == 11)//壁
 			{
-				field[i][j].is_wall = true;
+
 				field[i][j].index[0] = j;//左右当たり判定番号
 				field[i][j].index[1] = i;//下当たり判定配列番号
 				field[i][j].color = Black;
+				field[i][j].is_empty = false;
 			}
-			else//壁以外
-			{
-				field[i][j].is_wall = false;//壁の当たり判定なし
-			}
+			else
+				field[i][j].is_empty = true;
+
 
 		}
 	}
@@ -101,6 +99,7 @@ bool Block::init_field()
 			for (k = 0; k < 2; k++) //座標初期化
 			{
 				field[i][j].index[k] = 99;
+				field[i][j].is_empty = true;
 			}
 		}
 	return true;
@@ -135,7 +134,7 @@ void Block::Make_fallingblock()
 	for (i = 0; i < 4; i++)
 		for (j = 0; j < 4; j++)
 		{
-			mino_type[i][j] = minos[0][0][i][j];//ミノ形のコピー
+			mino_type[i][j] = minos[form][0][i][j];//ミノ形のコピー
 		}
 
 
@@ -143,11 +142,12 @@ void Block::Make_fallingblock()
 	{
 		for (j = 0; j < 4; j++)
 		{
+			falling_block[i][j].index[0] = j + 4;//初期値
+			falling_block[i][j].index[1] = i - 1;
+
 			if (mino_type[i][j] == 1)//タイプの中にブロックが入っている場合
 			{
-
-				falling_block[i][j].index[0] = j + 4;//初期値
-				falling_block[i][j].index[1] = i - 1;
+				falling_block[i][j].is_empty = false;
 			}
 			falling_block[i][j].color = color;//色情報を持たせる
 
@@ -165,7 +165,7 @@ void Block::init_fallingblock()
 		{
 			falling_block[i][j].index[0] = -1000;
 			falling_block[i][j].index[1] = -1000;
-
+			falling_block[i][j].is_empty = true;
 		}
 
 }
@@ -245,6 +245,17 @@ void Block::update()
 	}
 
 
+	if (key.A || pad.buttons.a)
+	{
+		Rotate(old_form);
+	}
+	/*if (key.B || pad.dpad.buttons.b)
+	{
+		;
+	}*/
+
+
+
 }
 
 //下に落ちる処理
@@ -267,6 +278,34 @@ bool Block::move_down()
 	return true;
 }
 
+//回転処理
+bool Block::Rotate(int no)
+{
+	int i, j;
+	block copy_block[4][4] = { -1000 };//コピー配列
+	int p, q;
+
+	for (i = 0; i < 4; i++)
+		for (j = 0; j < 4; j++)
+		{
+			p = falling_block[1][1].index[0];
+			q = falling_block[1][1].index[1];
+			copy_block[i][j] = falling_block[i][j];
+			copy_block[i][j].index[0] = -(falling_block[i][j].index[1] - q) + p;
+			copy_block[i][j].index[1] = (falling_block[i][j].index[0] - p) + q;
+		}
+
+
+	for (i = 0; i < 4; i++)
+		for (j = 0; j < 4; j++)
+		{
+			falling_block[i][j].index[0] = copy_block[i][j].index[0];
+			falling_block[i][j].index[1] = copy_block[i][j].index[1];
+		}
+
+	return true;
+}
+
 //描画
 void Block::draw()
 {
@@ -285,7 +324,10 @@ void Block::draw()
 			position_.x = (field[i][j].index[0] * 25) + 487;
 			position_.y = (field[i][j].index[1] * 25) + 173;
 
-			Sprite::draw(texture_, position_, &rect);
+			if (field[i][j].is_empty == false)
+			{
+				Sprite::draw(texture_, position_, &rect);
+			}
 		}
 	}
 	//動いてるブロック描画
@@ -301,9 +343,13 @@ void Block::draw()
 
 			position2.x = (falling_block[i][j].index[0] * 25) + 487;
 			position2.y = (falling_block[i][j].index[1] * 25) + 173;
-			if (position2.y >= 173) //座標内に入ったら、描画
+
+			if (falling_block[i][j].is_empty == false)
 			{
-				Sprite::draw(texture_, position2, &Arect);
+				if (position2.y >= 173) //座標内に入ったら、描画
+				{
+					Sprite::draw(texture_, position2, &Arect);
+				}
 			}
 		}
 
@@ -322,22 +368,20 @@ bool Block::can_move(int direction)
 		for (i = 0; i < 4; i++)
 			for (j = 0; j < 4; j++)
 			{
-				if (falling_block[i][j].index[0] >= -1 && falling_block[i][j].index[1] >= -1)
+				if (falling_block[i][j].is_empty == false)
 				{
 					checkx = falling_block[i][j].index[0];//座標番号の受け渡し
 					checky = falling_block[i][j].index[1];
-					if (field[checky][checkx - 1].index[0] != 99)//ブロックの場合
+					if (field[checky][checkx - 1].is_empty == false)//ブロックの場合
 					{
 						return false;
 					}
 
-					if (field[checky][checkx - 1].index[0] == 0) //壁の場合
+					/*if (field[checky][checkx - 1].index[0] == 0) //壁の場合
 					{
 						return false;
-					}
+					}*/
 				}
-
-
 
 			}
 		return true;
@@ -346,14 +390,20 @@ bool Block::can_move(int direction)
 		for (i = 0; i < 4; i++)
 			for (j = 0; j < 4; j++)
 			{//落ちているブロックの中身が入っている場合、配列番号を代入
-				if (falling_block[i][j].index[0] >= -1 && falling_block[i][j].index[0] >= -1)
+				if (falling_block[i][j].is_empty == false)
 				{
 					checkx = falling_block[i][j].index[0];
 					checky = falling_block[i][j].index[1];
-					if (field[checky + 1][checkx].index[1] == 21 || field[checky + 1][checkx].index[1] != 99)
+
+					if (field[checky + 1][checkx].is_empty == false)
+					{
+						return false;
+					}
+
+					/*if (field[checky + 1][checkx].index[1] == 21)
 					{
 						return false;//壁または、ブロックの場合
-					}
+					}*/
 				}
 			}
 		return true;
@@ -363,16 +413,22 @@ bool Block::can_move(int direction)
 			for (j = 0; j < 4; j++)
 			{
 				//落ちているブロックの中身が入っている場合、配列番号を代入
-				if (falling_block[i][j].index[0] >= -1 && falling_block[i][j].index[1] >= -1)
+				if (falling_block[i][j].is_empty == false)
 				{
 					checkx = falling_block[i][j].index[0];
 					checky = falling_block[i][j].index[1];
 
-					if (field[checky][checkx + 1].index[0] == 11 || field[checky][checkx + 1].index[0] != 99)//一つ下の配列に壁があるかどうか
+					if (field[checky][checkx + 1].is_empty == false)
+					{
+						return false;
+					}
+
+
+					/*if (field[checky][checkx + 1].index[0] == 11)//一つ下の配列に壁があるかどうか
 					{
 
 						return false;
-					}
+					}*/
 				}
 
 
@@ -382,12 +438,7 @@ bool Block::can_move(int direction)
 	}
 
 }
-//回転できるかどうか
-bool Block::can_rotate(int num)
-{
 
-	return true;
-}
 
 //落ちているブロックをフィールドの中に移す
 void Block::Copy_fallingblock_in_field()
@@ -396,7 +447,7 @@ void Block::Copy_fallingblock_in_field()
 	for (i = 0; i < 4; i++)
 		for (j = 0; j < 4; j++)
 		{
-			if (falling_block[i][j].index[0] >= -1 && falling_block[i][j].index[1] >= -1) //初期値が入っていた場合は行わない
+			if (falling_block[i][j].is_empty == false) //初期値が入っていた場合は行わない
 			{
 				field[falling_block[i][j].index[1]][falling_block[i][j].index[0]] = falling_block[i][j];//faling_blockの中身を代入する
 				Delete_fieldblock(falling_block[i][j].index[1]);//消す処理
@@ -415,7 +466,7 @@ void Block::Delete_fieldblock(int num)
 	int count;
 	for (j = 1; j < 11; j++)
 	{
-		if (field[num][j].index[0] != 99)//indexの中身が初期値以外の値の場合
+		if (field[num][j].is_empty == false)//indexの中身が初期値以外の値の場合
 		{
 			delete_count++;
 		}
@@ -428,10 +479,9 @@ void Block::Delete_fieldblock(int num)
 		{
 			for (j = 1; j < 11; j++)//そろった行の中身の初期化
 			{
-				if (field[num][j].index[0] != 99)
+				if (field[num][j].is_empty == false)
 				{
-					field[num][j].index[0] = 99;
-					field[num][j].index[1] = 99;
+					field[num][j].is_empty = true;
 				}
 			}
 			delete_count = 0;
@@ -451,7 +501,7 @@ void Block::Drop_fieldblock(int no)
 	for (i = no - 1; i > 1; i--) {
 		for (j = 1; j < 11; j++)
 		{
-			if (field[i][j].index[1] == 99)//現在見ているブロックが空の場合、以下の処理を実行しない
+			if (field[i][j].is_empty == true)//現在見ているブロックが空の場合、以下の処理を実行しない
 			{
 				continue;
 			}
@@ -459,7 +509,7 @@ void Block::Drop_fieldblock(int no)
 			do {
 				count++;
 
-			} while (field[i + count][j].index[1] == 99);//空のブロックの間ループ
+			} while (field[i + count][j].is_empty == true);//空のブロックの間ループ
 
 
 
