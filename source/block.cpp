@@ -172,104 +172,83 @@ void Block::init_fallingblock()
 //更新処理
 void Block::update()
 {
-    //各インターフェースの情報取得
-    Keyboard::State key = Key::getKeyState();
-    GamePad::State pad = Pad::getState();
-    int i, j;
+	//各インターフェースの情報取得
+	Keyboard::State key = Key::getKeyState();
+	GamePad::State pad = Pad::getState();
+	int i, j;
 
-    if( exist_fallingblock == false )//ブロック生成
-    {
+	if (exist_fallingblock == false)//ブロック生成
+	{
 
-        init_fallingblock();//ブロック初期化
-        Make_fallingblock();//ブロックを作る
-        exist_fallingblock = true;
-        Game_over();
-    }
+		init_fallingblock();//ブロック初期化
+		Make_fallingblock();//ブロックを作る
+		exist_fallingblock = true;
+		Game_over();
+	}
 
 
-    //自動落下
-    count++;
+	//自動落下
+	count++;
 
-    //方向キーでの移動
-    if( key.Down || pad.dpad.down )
-    {
-        if( count % 3 == 0 )//下の入力がある場合
-        {
-            move_down();
-        }
-    }
-    else 	if( count % 60 == 0 )//自動落下
-    {
-        move_down();
-    }
+	//方向キーでの移動
+	if (key.Down || pad.dpad.down)
+	{
+		if (count % 3 == 0)//下の入力がある場合
+		{
+			move_down();
+		}
+	}
+	else 	if (count % 60 == 0)//自動落下
+	{
+		move_down();
+	}
 
-    if( key.Left || pad.dpad.left )
-    {
-        if( count % 6 == 0 )
-        {
-            if( can_move( Left ) == true )//移動できる場合
-            {
-                for( i = 0; i < 4; i++ )
-                    for( j = 0; j < 4; j++ )
-                    {
-                        falling_block[ i ][ j ].index[ 0 ]--;//左
-                    }
-            }
-        }
-    }
-    if( key.Right || pad.dpad.right )
-    {
-        if( count % 6 == 0 )
-        {
-            if( can_move( Right ) == true )
-            {
-                for( i = 0; i < 4; i++ )
-                    for( j = 0; j < 4; j++ )
-                    {
-                        falling_block[ i ][ j ].index[ 0 ]++;//右
-                    }
-            }
+	if (key.Left || pad.dpad.left)
+	{
+		if (count % 6 == 0)
+		{
+			if (can_move(Left) == true)//移動できる場合
+			{
+				for (i = 0; i < 4; i++)
+					for (j = 0; j < 4; j++)
+					{
+						falling_block[i][j].index[0]--;//左
+					}
+			}
+		}
+	}
+	if (key.Right || pad.dpad.right)
+	{
+		if (count % 6 == 0)
+		{
+			if (can_move(Right) == true)
+			{
+				for (i = 0; i < 4; i++)
+					for (j = 0; j < 4; j++)
+					{
+						falling_block[i][j].index[0]++;//右
+					}
+			}
 
-        }
-    }
-    /*回転処理
-    if( key.A || pad.buttons.a )
-    {
-        if( count % 3 == 0 )
-        {
-            if( can_rotate( A ) == true )
-            {
 
-            }
-        }
+		}
+
+	}
+
+
+	if (key.Up || pad.dpad.up)
+	{
+		if (count % 6 == 0)
+		{
+			while (move_down() ==true);
+		}
+	}
 
 
 }
-
-
-    if( key.Z || pad.buttons.b )
-    {
-        if( count % 3 == 0 )
-        {
-            if( can_rotate( B ) == true )
-            {
-
-}
-
-
-
-
-
-
-
-
-        }
-    }
-
-    */
-}
+   
 //下に落ちる処理
-void Block::move_down()
+bool Block::move_down()
 {
     int i, j;
     if( can_move( Down ) == true )//動けるなら
@@ -283,8 +262,9 @@ void Block::move_down()
     if( can_move( Down ) == false )
     {
         Copy_fallingblock_in_field();//配列に情報を格納
+		return false;
     }
-
+	return true;
 }
 
 //描画
