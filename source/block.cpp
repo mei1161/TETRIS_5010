@@ -175,8 +175,8 @@ void Block::update()
 	//各インターフェースの情報取得
 	Keyboard::State key = Key::getKeyState();
 	GamePad::State pad = Pad::getState();
-	tracker.Update(key);
-	Btracker.Update(pad);
+	tracker.Update(key);//トラッカーアップデート
+	Btracker.Update(pad);//パッドトラッカーアップデート
 
 	int i, j;
 
