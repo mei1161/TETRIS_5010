@@ -134,7 +134,7 @@ void Block::Make_fallingblock()
 	for (i = 0; i < 4; i++)
 		for (j = 0; j < 4; j++)
 		{
-			mino_type[i][j] = minos[5][0][i][j];//ミノ形のコピー
+			mino_type[i][j] = minos[form][0][i][j];//ミノ形のコピー
 		}
 
 
@@ -143,7 +143,7 @@ void Block::Make_fallingblock()
 		for (j = 0; j < 4; j++)
 		{
 			falling_block[i][j].index[0] = j + 4;//初期値
-			falling_block[i][j].index[1] = i - 1;
+			falling_block[i][j].index[1] = i - 2;
 
 			if (mino_type[i][j] == 1)//タイプの中にブロックが入っている場合
 			{
@@ -176,6 +176,7 @@ void Block::update()
 	Keyboard::State key = Key::getKeyState();
 	GamePad::State pad = Pad::getState();
 	tracker.Update(key);
+	Btracker.Update(pad);
 
 	int i, j;
 
@@ -238,22 +239,22 @@ void Block::update()
 	}
 
 
-	if (tracker.pressed.Up || pad.dpad.up)
+	if (tracker.pressed.Up || Btracker.dpadUp == GamePad::ButtonStateTracker::PRESSED)
 	{
-		
-		
-			while (move_down() == true);
-		
+
+
+		while (move_down() == true);
+
 	}
 
 
-	if (tracker.pressed.A|| pad.buttons.a)
+	if (tracker.pressed.A || Btracker.a == GamePad::ButtonStateTracker::PRESSED)
 	{
-		Rotate(A,old_form);
+		Rotate(A, old_form);
 	}
-	if (tracker.pressed.Z|| pad.buttons.b)
+	if (tracker.pressed.Z || Btracker.b == GamePad::ButtonStateTracker::PRESSED)
 	{
-		Rotate(B,old_form);
+		Rotate(B, old_form);
 	}
 
 
@@ -281,45 +282,96 @@ bool Block::move_down()
 }
 
 //回転処理
-bool Block::Rotate(int pattern,int form)
+//回転行列を使った回転処理
+//パターン、形を引数として受け取る
+bool Block::Rotate(int pattern, int form)
 {
 	int i, j;
 	block copy_block[4][4] = { -1000 };//コピー配列
 	int p, q;
 
+	if (form==0)
+	{
+		return false;
+	}
 	switch (pattern)
 	{
-	case A:	for (i = 0; i < 4; i++)
-		for (j = 0; j < 4; j++)
+	case A:
+		for (i = 0; i < 4; i++)
+			for (j = 0; j < 4; j++)
+			{
+				p = falling_block[1][1].index[0];
+				q = falling_block[1][1].index[1];
+				copy_block[i][j] = falling_block[i][j];
+				copy_block[i][j].index[0] = -(falling_block[i][j].index[1] - q) + p;
+				copy_block[i][j].index[1] = (falling_block[i][j].index[0] - p) + q;
+			}
+
+		if (can_rotate(copy_block) == true)
 		{
-			p = falling_block[1][1].index[0];
-			q = falling_block[1][1].index[1];
-			copy_block[i][j] = falling_block[i][j];
-			copy_block[i][j].index[0] = -(falling_block[i][j].index[1] - q) + p;
-			copy_block[i][j].index[1] = (falling_block[i][j].index[0] - p) + q;
-		}
-
-
 			for (i = 0; i < 4; i++)
 				for (j = 0; j < 4; j++)
 				{
 					falling_block[i][j].index[0] = copy_block[i][j].index[0];
 					falling_block[i][j].index[1] = copy_block[i][j].index[1];
 				}return true;
-
-	case B:for(i=0;i<4;i++)
-		for (j = 0; j < 4; j++)
-		{
-			p = falling_block[1][1].index[0];
-			q = falling_block[1][1].index[1];
-			copy_block[i][j] = falling_block[i][j];
 		}
+
+	case B:
+		for (i = 0; i < 4; i++)
+			for (j = 0; j < 4; j++)
+			{
+				p = falling_block[1][1].index[0];
+				q = falling_block[1][1].index[1];
+				copy_block[i][j] = falling_block[i][j];
+				copy_block[i][j].index[0] = (falling_block[i][j].index[1] - q) + p;
+				copy_block[i][j].index[1] = -(falling_block[i][j].index[0] - p) + q;
+			}
+
+		if (can_rotate(copy_block) == true)
+		{
+			for (i = 0; i < 4; i++)
+				for (j = 0; j < 4; j++)
+				{
+					falling_block[i][j].index[0] = copy_block[i][j].index[0];
+					falling_block[i][j].index[1] = copy_block[i][j].index[1];
+				}return true;
+		}
+		
+		
+
 	}
 
 
-	
+
 }
 
+bool Block::can_rotate(block copy[4][4])
+{
+	int i, j;
+	int count = 0;
+	for(i=0;i<4;i++)
+		for (j = 0; j < 4; j++)
+		{
+			if (copy[i][j].is_empty == false)
+			{
+				if (field[copy[i][j].index[1]][copy[i][j].index[0]].is_empty == false)
+				{
+					count++;
+
+				}
+			}
+			
+		}
+	if (count == 0)
+	{
+		return true;
+	}
+	else
+		return false;
+	
+
+}
 //描画
 void Block::draw()
 {

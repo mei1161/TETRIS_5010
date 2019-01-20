@@ -31,6 +31,7 @@ private:
     int old_color;//1つ前に表示したいろ
     int old_form;//1つ前に表示した形
 	Keyboard::KeyboardStateTracker tracker;
+	GamePad::ButtonStateTracker Btracker;
 public:
     Block();   //コンストラクタ
     bool init();    //初期化
@@ -47,4 +48,5 @@ public:
     void  Game_over();//ゲームオーバー
     bool init_field();//壁以外の初期化
 	bool Rotate(int pattern,int form);//回転処理
+	bool can_rotate(block copy[4][4]);//現在の座標で回転できるのか
 };
