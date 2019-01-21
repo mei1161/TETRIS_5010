@@ -1,0 +1,76 @@
+typedef struct
+{
+    int index[ 2 ];
+    int color;
+    bool is_empty;
+}next_mino;
+
+class Next
+{
+private:
+    ID3D11ShaderResourceView* texture_;
+    next_mino first[ 4 ][ 2 ];
+    next_mino second[ 4 ][ 2 ];
+    next_mino third[ 4 ][ 2 ];
+
+    int& f_color;//ネクスト１番の色、形
+    int& f_form;
+
+public:
+    Next();//コンストラクタ
+    bool init();//初期化
+    void create_next_mino();
+    void draw();//描画
+
+
+    int get_nextcolor() { return f_color; }
+    int get_nextform() { return f_form; }
+};#include"next.h"
+
+Next::Next()
+{
+    texture_ = NULL;
+}
+
+bool Next::init()
+{
+    int i, j;
+    if( !(texture_ = Texture::load( L"Texture/Tetris11_SingleT.png" )) )
+    {
+        // エラー
+        return false;
+    }
+    return true;
+    //ネクストミノ初期化
+    for(i=0;i<4;i++)
+        for( j = 0; j < 2; j++ )
+        {
+            first[ i ][ j ].index[ 0 ] = -1000;
+            first[ i ][ j ].index[ 1 ] = -1000;
+            first[ i ][ j ].color = -1000;
+            first[ i ][ j ].is_empty = true;
+
+            second[ i ][ j ].index[ 0 ] = -1000;
+            second[ i ][ j ].index[ 1 ] = -1000;
+            second[ i ][ j ].color = -1000;
+            second[ i ][ j ].is_empty = true;
+
+            third[ i ][ j ].index[ 0 ] = -1000;
+            third[ i ][ j ].index[ 1 ] = -1000;
+            third[ i ][ j ].color = -1000;
+            third[ i ][ j ].is_empty = true;
+        }
+}
+void Next::create_next_mino()
+{
+    srand( time( NULL ) );
+
+
+
+}
+
+//描画
+void Next::draw()
+{
+
+}

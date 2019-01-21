@@ -32,6 +32,12 @@ private:
     int old_form;//1つ前に表示した形
 	Keyboard::KeyboardStateTracker tracker;
 	GamePad::ButtonStateTracker Btracker;
+    block next_1[ 4 ][ 2 ];
+    block next_2[ 4 ][ 2 ];
+    block next_3[ 4 ][ 2 ];
+    int next_block[21];
+    int next[ 7 ];
+
 public:
     Block();   //コンストラクタ
     bool init();    //初期化

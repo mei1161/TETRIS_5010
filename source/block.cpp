@@ -113,21 +113,32 @@ void Block::Make_fallingblock()
 {
     srand( time( NULL ) );
     int i, j;
+    int k, l;
     int color;//色
     int form;//形
     int mino_type[ 4 ][ 4 ];
-    color = rand() % 7;
-    form = rand() % 7;
-
-    while( old_form == form )//形が同じ場合ループ
+    for( k = 0; k < 7; k++ )
     {
-        form = rand() % 7;
+        next[ k ] = rand() % 7;
+        
+        for( l = k - 1; l<k; l-- )
+        {
+            if( l == -1 )
+            {
+                break;
+            }
+            if( next[ k ] == next[ l ] )
+            {
+                k--;
+            }
+        }
+    }
+    for( i = 0; i < 7; i++ )
+    {
+        color = next[ i ];
+        form = next[ i ];
     }
 
-    while( old_color == color )//色が同じ場合ループ
-    {
-        color = rand() % 7;
-    }
     old_color = color;//前の色、形として保存
     old_form = form;
 
