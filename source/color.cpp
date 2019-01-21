@@ -17,3 +17,20 @@ static Vector2 get_textureUV_from(int color)
 	}
 	return position;
 }
+static Vector2 get_textureUV2_from(int color)
+{
+	Vector2 position;
+	position.x = 967L;
+	switch (color)
+	{
+	case Lightblue:position.y = 913L; break;
+	case Orange: position.y = 928L; break;
+	case Green: position.y = 943L; break;
+	case Pink: position.y = 958L; break;
+	case Blue:position.y = 973L; break;
+	case Brown:position.y = 988L; break;
+	case Violet:position.y =1003L; break;
+	case Black:position.y = 1018L; break;
+	}
+	return position;
+}
