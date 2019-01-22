@@ -36,9 +36,8 @@ private:
 	Vector2 position3;//ネクストブロック描画座標
 	Vector2 position4;
 	Vector2 position5;
-	int next[6];
-	int next_count;
-	bool r_flag;
+	int next[6];//ネクストの配列
+	bool r_flag;//ランダムフラグ
 public:
 	Block();   //コンストラクタ
 	bool init();    //初期化
@@ -59,4 +58,5 @@ public:
 	void Create_next_block();//ネクストブロックの生成
 	void init_next_block();//ネクストブロックの初期化
 	void move_up();//添え字を繰り上げる
+	void init_next();//ネクストの初期化
 };

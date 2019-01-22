@@ -26,7 +26,6 @@ Block::Block()
 	exist_fallingblock = false;//ブロック生成
 	old_color = -99;
 	old_form = -99;
-	next_count = 0;
 	r_flag = false;
 }
 
@@ -90,6 +89,8 @@ void Block::Game_over()
 		{
 			if (can_move(Down) == false && falling_block[i][j].index[1] == -1)
 			{
+				init_next();//ネクストの初期化
+				r_flag = false;//フラグ初期化
 				init_field();
 			}
 		}
@@ -109,9 +110,19 @@ bool Block::init_field()
 				field[i][j].is_empty = true;
 			}
 		}
-	r_flag = false;
+	
 	return true;
 	
+}
+//ネクストの初期化
+void Block::init_next()
+{
+	int i;
+	for (i = 0; i < 6; i++)
+	{
+		next[i] = -1000;
+	}
+
 }
 
 //ネクストブロックの初期化
@@ -243,6 +254,7 @@ void Block::move_up()
 
 	do {
 		next[5] = rand() % 7;
+
 	} while (next[5] == next[0]||next[5]==next[1]||next[5]==next[2]||next[5]==next[3]||next[5]==next[4]);//中身が１つでもかぶったら、乱数をぶち込む
 }
 //落ちるブロックの初期化
