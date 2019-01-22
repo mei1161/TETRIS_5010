@@ -36,7 +36,7 @@ private:
 	Vector2 position3;//ネクストブロック描画座標
 	Vector2 position4;
 	Vector2 position5;
-	int next[4];
+	int next[6];
 	int next_count;
 	bool r_flag;
 public:
@@ -58,4 +58,5 @@ public:
 	bool can_rotate(block copy[4][4]);//現在の座標で回転できるのか
 	void Create_next_block();//ネクストブロックの生成
 	void init_next_block();//ネクストブロックの初期化
+	void move_up();//添え字を繰り上げる
 };

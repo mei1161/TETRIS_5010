@@ -109,8 +109,9 @@ bool Block::init_field()
 				field[i][j].is_empty = true;
 			}
 		}
+	r_flag = false;
 	return true;
-
+	
 }
 
 //ネクストブロックの初期化
@@ -139,14 +140,14 @@ void Block::Create_next_block()
 	for (i = 0; i < 4; i++)
 		for (j = 0; j < 2; j++)
 		{
-			next_block[k][i][j].color = next[k+1];
+			next_block[k][i][j].color = next[k];
 		}
 
 for(k=0;k<3;k++)
 	for(i=0;i<4;i++)
 		for (j = 0; j < 2; j++)
 		{
-			mino_form[i][j] = small_mino[next[k+1]][i][j];
+			mino_form[i][j] = small_mino[next[k]][i][j];
 			
 			next_block[k][i][j].index[0] = j;
 			next_block[k][i][j].index[1] = i;
@@ -169,9 +170,9 @@ void Block::Make_fallingblock()
 	int form;//形
 	int mino_type[4][4];
 	
-
+	//はじめのみ生成
 	if (r_flag==false) {
-		for (k = 0; k < 4; k++)
+		for (k = 0; k < 7; k++)
 		{
 			next[k] = rand() % 7;
 
@@ -186,15 +187,18 @@ void Block::Make_fallingblock()
 					k--;
 				}
 			}
+			
 		}
 		r_flag = true;
+		
 	}
 	init_next_block();//初期化
-	color = next[next_count];
-	form = next[next_count];
-	Create_next_block();//ネクストブロックの表示するための何か
-
 	
+	color = next[0];
+	form = next[0];
+	
+	move_up();//繰り上げ
+	Create_next_block();//ネクストブロックの表示するための何か
 
 	old_color = color;//前の色、形として保存
 	old_form = form;
@@ -211,7 +215,7 @@ void Block::Make_fallingblock()
 		for (j = 0; j < 4; j++)
 		{
 			falling_block[i][j].index[0] = j + 4;//初期値
-			falling_block[i][j].index[1] = i - 2;
+			falling_block[i][j].index[1] = i - 1;
 
 			if (mino_type[i][j] == 1)//タイプの中にブロックが入っている場合
 			{
@@ -221,13 +225,25 @@ void Block::Make_fallingblock()
 
 		}
 	}
+
 	
-	next_count++;
-	if (next_count == 4)
-	{
-		next_count = 0;
-		r_flag = false;
-	}
+	
+}
+//繰り上げ
+void Block::move_up()
+{
+	srand(time(NULL));
+
+	next[0] = next[1];//添え字の中身を繰り上げ
+	next[1] = next[2];
+	next[2] = next[3];
+	next[3] = next[4];
+	next[4] = next[5];
+	
+
+	do {
+		next[5] = rand() % 7;
+	} while (next[5] == next[0]||next[5]==next[1]||next[5]==next[2]||next[5]==next[3]||next[5]==next[4]);//中身が１つでもかぶったら、乱数をぶち込む
 }
 //落ちるブロックの初期化
 void Block::init_fallingblock()
