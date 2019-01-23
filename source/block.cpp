@@ -38,6 +38,8 @@ bool Block::init()
 		// エラー
 		return false;
 	}
+    
+   //ネクスト初期化
 	int i, j, k;
 	for(k=0;k<3;k++)
 		for (i = 0; i < 4; i++)
@@ -302,7 +304,7 @@ void Block::update()
 			move_down();
 		}
 	}
-	else 	if (count % 50 == 0)//自動落下
+	else if (count % 50 == 0)//自動落下
 	{
 		move_down();
 	}
@@ -344,12 +346,12 @@ void Block::update()
 	{
 
 
-		while (move_down() == true);
+		while (move_down() == true);//ハードドロップ
 
 	}
 
 
-	if (tracker.pressed.A || Btracker.a == GamePad::ButtonStateTracker::PRESSED)
+	if (tracker.pressed.A || Btracker.a == GamePad::ButtonStateTracker::PRESSED)//回転
 	{
 		Rotate(A, old_form);
 	}
@@ -639,12 +641,7 @@ bool Block::can_move(int direction)
 					{
 						return false;
 					}
-
-
-
 				}
-
-
 			}
 		return true;
 		break;

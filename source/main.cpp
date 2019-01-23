@@ -139,29 +139,29 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
         return 0;
     }
 
-     // fieldクラス変数
-     Field field;
+    // fieldクラス変数
+    Field field;
 
-     // ブロッククラス
-     Block block;
-     if( !block.init() )
-     {
-         //エラー
-         return 0;
-     }
-     if( !field.init() )
-     {
-         //エラー
-         return 0;
-     }
-     //ボタンクラス初期化
-     Button button;
-     if( !button.init() )
-     {
-         return 0;
-     }
+    // ブロッククラス
+    Block block;
+    if( !block.init() )
+    {
+        //エラー
+        return 0;
+    }
+    if( !field.init() )
+    {
+        //エラー
+        return 0;
+    }
+    //ボタンクラス初期化
+    Button button;
+    if( !button.init() )
+    {
+        return 0;
+    }
 
-     // Keyboardクラスの初期化
+    // Keyboardクラスの初期化
     if( !Key::init() )
     {
         // エラー
@@ -198,15 +198,14 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 
 
     // 現在の作業番号
- //   int work_no = kTitleInit;
+    int work_no = kTitleInit;
 
-   /* // シーンクラス変数
+    // シーンクラス変数
     Title title;
-    Tutorial tutorial;
-    Result result;
 
 
-    Game game;*/
+
+
 
     while( msg.message != WM_QUIT )
     {
@@ -235,11 +234,10 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                 Key::update();      // キーボード更新
            //     Adx::update();      // サウンド更新
 
-                button.update();
-                block.update();
+
                 /////// !! 後で修正 !! /////////////
                 // シーン処理
-            /*    switch( work_no )
+                switch( work_no )
                 {
                 case kTitleInit:
                     // タイトルクラス初期化
@@ -253,35 +251,23 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     break;
                 case kTitleUpdate:
                     // タイトルクラス更新処理
+                    button.update();
                     if( !title.update() )
                     {
                         // falseが返ってきたら次のシーンへ
                         title.destroy();
-                        work_no = kTutorialInit;
-                    }
-                    break;
-                case kTutorialInit:
-                    //チュートリアルクラス初期化
-                    if( !tutorial.init() )
-                    {
-                        // エラー
-                        PostQuitMessage( 0 );
-                    }
-                    // 次の処理へ
-                    work_no = kTutorialUpdate;
-                    break;
-                case kTutorialUpdate:
-                    // チュートリアルクラス更新処理
-                    if( !tutorial.update() )
-                    {
-                        // falseが返ってきたら次のシーンへ
-                        tutorial.destroy();
                         work_no = kGameInit;
                     }
                     break;
+
+
                 case kGameInit:
                     // ゲームクラス初期化
-                    if( !game.init() )
+                    if( !field.init() )
+                    {
+                        PostQuitMessage( 0 );
+                    }
+                    if( !block.init() )
                     {
                         // エラー
                         PostQuitMessage( 0 );
@@ -290,34 +276,10 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     work_no = kGameUpdate;
                     break;
                 case kGameUpdate:
-                    // falseが返ってきたら次のシーンへ
-                    // ゲームクラス更新
-                    if( !game.update() )
-                    {
-                        game.destroy();
-                        work_no = kResultInit;
-                    }
+                    button.update();
+                    block.update();
                     break;
-                case kResultInit:
-                    // リザルトクラス初期化
-                    if( !result.init() )
-                    {
-                        // エラー
-                        PostQuitMessage( 0 );
-                    }
-                    // 次の処理へ
-                    work_no = kResultUpdate;
-                    break;
-                case kResultUpdate:
-                    // リザルトクラス更新
-                    if( !result.update( game.getScoreTrue() ) )
-                    {
-                        // falseが返ってきたら次のシーンへ
-                        result.destroy();
-                        work_no = kTitleInit;
-                    }
-                    break;
-                }*/
+                }
 
                 /////////////////////////////////////
 
@@ -326,27 +288,23 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                 Sprite::begin();    // スプライト描画開始
 
                 ///////// !!　Title !! ///////////
-             /*   switch( work_no )
+                switch( work_no )
                 {
                 case kTitleUpdate:
                     title.draw();
+                    button.draw();
                     break;
-                case kTutorialUpdate:
-                    tutorial.draw();
-                    break;
+
                 case kGameUpdate:
-                    game.draw();
-
+                    field.draw();
+                    block.draw();//ブロック描画
+                    button.draw();//ボタン描画
                     break;
-                case kResultUpdate:
-                    result.draw();
 
-                    break;
-                }*/
+                }
                 /////////////////////////////////////　
-                field.draw();//フィールド描画
-                block.draw();//ブロック描画
-                button.draw();//ボタン描画
+
+
                 Sprite::end();      // スプライト描画終了
                 Direct3D::present();// 画面更新
             }
@@ -368,7 +326,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     Common::destroy();
     Sprite::destroy();
     Direct3D::destroy();
-  //  Adx::destroy();
+    //  Adx::destroy();
 
     return 0;
 }

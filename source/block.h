@@ -2,6 +2,7 @@
 #include"keyboard.h"
 #include"texture.h"
 #include"pad.h"
+#include"stdlib.h"
 
 //名前空間
 using namespace DirectX;
@@ -18,9 +19,8 @@ typedef struct
 class Block
 {
 private:
-
+    
 	ID3D11ShaderResourceView* texture_;//テクスチャ
-
 	int key_state;//何のキーを押したかを格納
 	int count;
 	block falling_block[4][4];//今落ちているブロック

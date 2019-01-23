@@ -155,6 +155,7 @@
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\pad.cpp" />
     <ClCompile Include="source\player.cpp" />
+    <ClCompile Include="source\position.cpp" />
     <ClCompile Include="source\result.cpp" />
     <ClCompile Include="source\sprite.cpp" />
     <ClCompile Include="source\texture.cpp" />
