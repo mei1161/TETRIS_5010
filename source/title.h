@@ -2,7 +2,6 @@
 #include <d3d11.h>
 #include "release.h"
 #include"texture.h"
-#include"position.cpp"
 #include "pad.h"
 #include"keyboard.h"
 
