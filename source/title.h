@@ -4,6 +4,10 @@
 #include"texture.h"
 #include "pad.h"
 #include"keyboard.h"
+#include"sprite.h"
+
+using namespace DirectX;
+using namespace SimpleMath;
 
 ////////////////////////////////////
 // class

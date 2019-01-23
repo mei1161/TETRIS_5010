@@ -155,8 +155,8 @@
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\pad.cpp" />
     <ClCompile Include="source\player.cpp" />
-    <ClCompile Include="source\position.cpp" />
     <ClCompile Include="source\result.cpp" />
+    <ClCompile Include="source\score.cpp" />
     <ClCompile Include="source\sprite.cpp" />
     <ClCompile Include="source\texture.cpp" />
     <ClCompile Include="source\title.cpp" />
@@ -181,6 +181,7 @@
     <ClInclude Include="source\player.h" />
     <ClInclude Include="source\release.h" />
     <ClInclude Include="source\result.h" />
+    <ClInclude Include="source\score.h" />
     <ClInclude Include="source\sprite.h" />
     <ClInclude Include="source\texture.h" />
     <ClInclude Include="source\title.h" />
