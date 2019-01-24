@@ -15,7 +15,7 @@ bool Title::init()
 		return false;
 	}
 
-    count = 0;
+    count = 600000;
 
 	return true;
 }
