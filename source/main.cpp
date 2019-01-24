@@ -141,10 +141,11 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 
     // fieldクラス変数
     Field field;
-
+    Score score;
     // ブロッククラス
     Block block;
-    if( !block.init() )
+    Button button;
+  /*  if( !block.init() )
     {
         //エラー
         return 0;
@@ -153,18 +154,18 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     {
         //エラー
         return 0;
-    }Score score;
+    }
     if( !score.init() )
     {
         return 0;
     }
     //ボタンクラス初期化
-    Button button;
+    
     if( !button.init() )
     {
         return 0;
     }
-
+    */
     // Keyboardクラスの初期化
     if( !Key::init() )
     {
@@ -250,7 +251,12 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                         // エラー
                         PostQuitMessage( 0 );
                     }
-                    // 次の処理へ
+                    if( !button.init() )
+                    {
+                        // エラー
+                        PostQuitMessage( 0 );
+                    }
+                        // 次の処理へ
                     work_no = kTitleUpdate;
                     break;
                 case kTitleUpdate:
@@ -272,6 +278,11 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                         PostQuitMessage( 0 );
                     }
                     if( !block.init() )
+                    {
+                        // エラー
+                        PostQuitMessage( 0 );
+                    }
+                    if( !score.init() )
                     {
                         // エラー
                         PostQuitMessage( 0 );
