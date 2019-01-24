@@ -1,7 +1,6 @@
 #pragma once
 #include"sprite.h"
 #include"texture.h"
-#include"block.h"
 #include"release.h"
 using namespace DirectX;
 using namespace SimpleMath;
@@ -22,7 +21,7 @@ private:
 public:
     Score();
     bool init();//初期化
-    void update();//更新（いるかわからない）
+    void update(int num);//更新（いるかわからない）
     void calculate();//描画座標の計算
     void draw();//描画
     void destroy();//破棄

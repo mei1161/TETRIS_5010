@@ -293,6 +293,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                 case kGameUpdate:
                     button.update();
                     block.update();
+                    score.update(block.get_score());
                     break;
                 }
 

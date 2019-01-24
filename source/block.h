@@ -64,5 +64,5 @@ public:
 	void move_up();//添え字を繰り上げる
 	void init_next();//ネクストの初期化
 
-    int get_score() { return score; };//スコアを返す
+    int get_score() { return score; }//スコア加算用フラグを返す
 };

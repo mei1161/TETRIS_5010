@@ -18,15 +18,15 @@ bool Score::init()
     score = 0;
     return true;
 }
-void Score::update()
+void Score::update(int num)
 {
-
+    
+    score = num;
+    
 }
 //ï`âÊîÕàÕåvéZ
 void Score::calculate()
 {
-   
-
     
     position1.y = 961;
 
@@ -45,7 +45,7 @@ void Score::calculate()
     }
     position2.y = 961;
 
-    switch( score % 100 )
+    switch( (score / 10)%10 )
     {
     case 0:position2.x = 0; break;
     case 1:position2.x = 16; break;
@@ -60,7 +60,7 @@ void Score::calculate()
     }
     position3.y = 961;
 
-    switch( score % 1000 )
+    switch( (score / 100)%10 )
     {
     case 0:position3.x = 0L; break;
     case 1:position3.x = 16; break;
@@ -75,7 +75,7 @@ void Score::calculate()
     }
 
     position4.y = 961;
-    switch( score % 10000 )
+    switch( (score / 1000)%10 )
     {
     case 0:position4.x = 0; break;
     case 1:position4.x = 16; break;
@@ -90,7 +90,7 @@ void Score::calculate()
     }
 
     position5.y = 961;
-    switch( score % 10000 )
+    switch( (score / 10000)%10)
     {
     case 0:position5.x = 0; break;
     case 1:position5.x = 16; break;
@@ -104,7 +104,7 @@ void Score::calculate()
     case 9:position5.x = 144; break;
     }
     position6.y = 961;
-    switch( score % 1000 )
+    switch( (score / 100000)%10 )
     {
     case 0:position6.x = 0; break;
     case 1:position6.x = 16; break;
@@ -121,7 +121,7 @@ void Score::calculate()
 }
 void Score::draw()
 {
-    
+
     calculate();//êÿÇËéÊÇÈîÕàÕÇåvéZ
 
     Vector2 digit1;//ï`âÊç¿ïW
@@ -132,9 +132,9 @@ void Score::draw()
     rect1.top = position1.y;
     rect1.left = position1.x;
     rect1.bottom = rect1.top + 21L;
-    rect1.right = rect1.left+ 16L;
+    rect1.right = rect1.left + 16L;
     Sprite::draw( texture_, digit1, &rect1 );
-   
+
     Vector2 digit2;//ï`âÊç¿ïW
     digit2.x = 626L;
     digit2.y = 42L;
