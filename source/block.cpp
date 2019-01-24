@@ -25,8 +25,9 @@ Block::Block()
 	count = 0;//カウント
 	exist_fallingblock = false;//ブロック生成
 	old_color = -99;
-	old_form = -99;
-	r_flag = false;
+	old_form = -99;//今のブロックの形
+	r_flag = false;//ランダムフラグ
+    score = 0;
 }
 
 //初期化
@@ -379,6 +380,7 @@ bool Block::move_down()
 	if (can_move(Down) == false)
 	{
 		Copy_fallingblock_in_field();//配列に情報を格納
+        score += 20;
 		return false;
 	}
 	return true;
@@ -675,7 +677,9 @@ void Block::Copy_fallingblock_in_field()
 	{
 		Delete_fieldblock(i);//消す処理
 	}
+    
 	exist_fallingblock = false;//新しいブロック生成
+    
 }
 
 //そろったブロックを消す処理

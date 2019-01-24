@@ -21,7 +21,7 @@
 #include"field.h"
 #include"player.h"
 #include"button.h"
-
+#include"score.h"
 
 
 ////////////////////////////////////
@@ -152,6 +152,10 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     if( !field.init() )
     {
         //エラー
+        return 0;
+    }Score score;
+    if( !score.init() )
+    {
         return 0;
     }
     //ボタンクラス初期化
@@ -299,6 +303,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                     field.draw();
                     block.draw();//ブロック描画
                     button.draw();//ボタン描画
+                    score.draw();
                     break;
 
                 }
@@ -322,6 +327,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     block.destroy();
     Key::destroy();
     button.destroy();
+    score.destroy();
     //   Font::destroy();
     Common::destroy();
     Sprite::destroy();

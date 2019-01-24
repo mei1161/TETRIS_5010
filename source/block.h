@@ -1,8 +1,11 @@
+#pragma once
+
 #include"sprite.h"
 #include"keyboard.h"
 #include"texture.h"
 #include"pad.h"
 #include"stdlib.h"
+
 
 //名前空間
 using namespace DirectX;
@@ -38,6 +41,7 @@ private:
 	Vector2 position5;
 	int next[6];//ネクストの配列
 	bool r_flag;//ランダムフラグ
+    int score;//スコア
 public:
 	Block();   //コンストラクタ
 	bool init();    //初期化
@@ -59,4 +63,6 @@ public:
 	void init_next_block();//ネクストブロックの初期化
 	void move_up();//添え字を繰り上げる
 	void init_next();//ネクストの初期化
+
+    int get_score() { return score; };//スコアを返す
 };
