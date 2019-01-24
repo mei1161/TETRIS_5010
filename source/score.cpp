@@ -5,7 +5,7 @@ using namespace SimpleMath;
 
 Score::Score()
 {
-    score = 0;
+    texture_ = NULL;
 }
 //‰Šú‰»
 bool Score::init()
@@ -15,8 +15,12 @@ bool Score::init()
         // ƒGƒ‰[
         return false;
     }
-    
+    score = 0;
     return true;
+}
+void Score::update()
+{
+
 }
 //•`‰æ”ÍˆÍŒvZ
 void Score::calculate()

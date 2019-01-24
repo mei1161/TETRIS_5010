@@ -106,7 +106,7 @@ bool Block::init_field()
 	for (i = 0; i < 21; i++)
 		for (j = 1; j < 11; j++)
 		{
-			field[i][j].color = -1;  //Fî•ñ‰Šú‰»
+            field[ i ][ j ].color = -1;  //Fî•ñ‰Šú‰»
 			for (k = 0; k < 2; k++) //À•W‰Šú‰»
 			{
 				field[i][j].index[k] = 99;

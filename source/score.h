@@ -20,7 +20,7 @@ private:
     Vector2 position6;
     int score;//スコア
 public:
-   Score();//コンストラクタ
+    Score();
     bool init();//初期化
     void update();//更新（いるかわからない）
     void calculate();//描画座標の計算

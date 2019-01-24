@@ -339,6 +339,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     Key::destroy();
     button.destroy();
     score.destroy();
+    title.destroy();
     //   Font::destroy();
     Common::destroy();
     Sprite::destroy();
