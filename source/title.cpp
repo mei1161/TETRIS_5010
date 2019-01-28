@@ -31,7 +31,7 @@ bool Title::update()
     Keyboard::State key = Key::getKeyState();
     tracker.Update( key );
     Btracker.Update( pad );
-    if( key.A || pad.buttons.a )
+    if( (key.A || pad.buttons.a)&&count%6==0)//SINGLEPLAYにカーソル合わせてAでシングルプレイ
     {
         return false;
     }

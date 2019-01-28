@@ -13,7 +13,8 @@ enum Color
 	Blue,
 	Brown,
 	Violet,
-    Black
+    Black,
+    None
 };
 
 

@@ -73,7 +73,7 @@ bool Block::init()
 
                 field[ i ][ j ].index[ 0 ] = j;//左右当たり判定番号
                 field[ i ][ j ].index[ 1 ] = i;//下当たり判定配列番号
-                field[ i ][ j ].color = Black;
+                field[ i ][ j ].color = None;
                 field[ i ][ j ].is_empty = false;
             }
             else
@@ -486,7 +486,7 @@ void Block::draw()
     //壁描画//固まったブロックの描画
     for( i = 0; i < 22; i++ ) {
         for( j = 0; j < 12; j++ ) {
-            Vector2 texture_UV = get_textureUV_from( field[ i ][ j ].color );
+            Vector2 texture_UV = get_textureUV_from( field[ i ][ j ].color );//関数により、描画範囲を切り取地
             RECT rect;
             rect.top = texture_UV.x;
             rect.left = texture_UV.y;
@@ -496,12 +496,17 @@ void Block::draw()
             position_.x = (field[ i ][ j ].index[ 0 ] * 25) + 487;
             position_.y = (field[ i ][ j ].index[ 1 ] * 25) + 173;
 
-            if( field[ i ][ j ].is_empty == false )
+            if( field[ i ][ j ].is_empty == false )//ブロックの中身があるのみ場合描画
             {
-                Sprite::draw( texture_, position_, &rect );
+                if( field[ i ][ j ].color != None )//デバッグ用の壁を消す
+                {
+                    Sprite::draw( texture_, position_, &rect );
+                }
+                
             }
         }
     }
+
     //動いてるブロック描画
     RECT Arect;
     for( i = 0; i < 4; i++ )
