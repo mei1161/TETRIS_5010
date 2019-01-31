@@ -89,6 +89,8 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\cri\pc\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -158,6 +160,9 @@
     <ClCompile Include="source\result.cpp" />
     <ClCompile Include="source\score.cpp" />
     <ClCompile Include="source\sprite.cpp" />
+    <ClCompile Include="source\stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="source\texture.cpp" />
     <ClCompile Include="source\title.cpp" />
   </ItemGroup>
@@ -180,11 +185,19 @@
     <ClInclude Include="source\pad.h" />
     <ClInclude Include="source\player.h" />
     <ClInclude Include="source\release.h" />
+    <ClInclude Include="source\resource.h" />
     <ClInclude Include="source\result.h" />
     <ClInclude Include="source\score.h" />
     <ClInclude Include="source\sprite.h" />
+    <ClInclude Include="source\stdafx.h" />
     <ClInclude Include="source\texture.h" />
     <ClInclude Include="source\title.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="source\TETRIS__5010.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

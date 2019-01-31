@@ -7,6 +7,7 @@
 #include <SimpleMath.h>
 #include <Keyboard.h>
 #include <ctime>
+#include<crtdbg.h>
 
 #include "direct3d.h"
 #include"game.h"
@@ -22,7 +23,7 @@
 #include"player.h"
 #include"button.h"
 #include"score.h"
-
+#include"resource.h"
 
 ////////////////////////////////////
 // 名前空間
@@ -58,8 +59,24 @@ LRESULT CALLBACK WinProc( HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam );
 ////////////////////////////////////
 int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow )
 {
-    // 乱数初期化(一度だけ呼び出す)
-    srand( time( NULL ) );
+#ifdef _DEBUG
+    //メモリリークのチェック
+    //ビットフラグでチェック
+    //_CrtSetBreakAlloc( 162 );//メモリリークしている場所で止まる//普段はコメントアウト
+
+    _CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+#endif
+
+
+    //ミューテックスの作成
+    HANDLE mutex = CreateMutex( NULL, false, "Game" );
+
+    //多重起動のチェック
+    if( GetLastError() == ERROR_ALREADY_EXISTS )
+    {
+        //起動している
+        return 0;
+    }
 
     // ウィンドウクラスの作成
     WNDCLASSEX wnd;
@@ -71,6 +88,8 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     wnd.hCursor = LoadCursor( NULL, IDC_ARROW );                     // カーソル形状読み込み
     wnd.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_WINDOW + 1);  // ウィンドウカラー
     wnd.lpfnWndProc = WinProc;                                       // ウィンドウプロシージャへの関数ポインタ
+    wnd.hIcon = LoadIcon( hInstance, reinterpret_cast<LPCSTR>(IDI_ICON1) );//アイコンの設定
+    //wnd.hIconSm
 
     // 登録
     if( !RegisterClassEx( &wnd ) )
@@ -145,28 +164,28 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     // ブロッククラス
     Block block;
     Button button;
-  /*  if( !block.init() )
-    {
-        //エラー
-        return 0;
-    }
-    if( !field.init() )
-    {
-        //エラー
-        return 0;
-    }
-    if( !score.init() )
-    {
-        return 0;
-    }
-    //ボタンクラス初期化
-    
-    if( !button.init() )
-    {
-        return 0;
-    }
-    */
-    // Keyboardクラスの初期化
+    /*  if( !block.init() )
+      {
+          //エラー
+          return 0;
+      }
+      if( !field.init() )
+      {
+          //エラー
+          return 0;
+      }
+      if( !score.init() )
+      {
+          return 0;
+      }
+      //ボタンクラス初期化
+
+      if( !button.init() )
+      {
+          return 0;
+      }
+      */
+      // Keyboardクラスの初期化
     if( !Key::init() )
     {
         // エラー
@@ -256,7 +275,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                         // エラー
                         PostQuitMessage( 0 );
                     }
-                        // 次の処理へ
+                    // 次の処理へ
                     work_no = kTitleUpdate;
                     break;
                 case kTitleUpdate:
@@ -293,7 +312,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
                 case kGameUpdate:
                     button.update();
                     block.update();
-                    score.update(block.get_score());
+                    score.update( block.get_score() );
                     break;
                 }
 
